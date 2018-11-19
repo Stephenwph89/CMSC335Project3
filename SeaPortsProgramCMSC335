@@ -1,0 +1,113 @@
+
+/**
+ *Stephen Hamilton
+ *Class: CMSC 335
+ *Section: 7981
+ *Instructor: Dinsoreanu, Mihaela
+ *Assignment: Project 3 Sea Port
+ * Purpose: The purpose of this project is to 
+ * allow the user to Create a thread for each job, 
+ * and to create a GUI to show the
+ * progress of each job.
+ * 
+ *Date Started: 11/18/2018
+ *Due Date: 12/02/2018
+ */
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import javax.swing.tree.TreeSelectionModel;
+import java.util.HashMap;
+import javax.swing.tree.DefaultTreeModel;
+import java.awt.event.ActionEvent;
+import java.io.FileReader;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.JFileChooser;
+
+
+
+final class SeaPortsProgramCMSC335 extends JFrame {
+    
+    //EXPANDED UPON THE GUI FOR PROJECTS 3, 4
+    
+    //This creates an instance of world in parent class
+    WorldCMSC335 world;
+    //Variable Declarations
+     // ALL OF THESE FIELDS ARE EXPANDED UPON FROM PROJ 1 and 2 TO MAKE 3 and 4
+    //GUI FIELDS
+    //main frame is the frame of the program
+    JFrame mainFrame;
+    //This field if for the JTree within the program
+    JTree mainJTree;
+    //All areas for text. An area of text for searched info, an area for job status
+    //and an area for job pool
+    JTextArea searchArea, statusArea, jobsArea;
+    //Scroll panes for all areas were text appears so user can scroll through info
+    //that appears in area for text
+    JScrollPane treePane, searchPane, jobsPane,
+        statusPane, poolPane;
+    //The various panels to hold the various GUI Components
+    JPanel mainPanel, optPanel, wPanel, tPanel, tButPanel, jPanel,
+        jobsScroll, logsPanel;
+      //JButton holds all buttons added to program thus far
+     //Read Button variable to read in file
+     //Sort buttton variable to sort through the information in the file.
+     //Search BUtton variable to search for "Things" in file
+    JButton  detButton, expButton,rdButton,
+        colButton, srtButton, schButton;
+    //This is the label for the search text field
+    JLabel schLabel, srtLabel;
+    //text field in which the user can input information to search
+    JTextField schField;
+    //String array to hold values for different combo boxes
+    //each combo box stores objects converted to strings
+    //for the user to slect between different ship parameters, person jobs / names, ports,  etc...
+    //The user can even select options to sort through information
+    String[] schBoxValues, srtBoxValues, trgBoxValues,
+        tyBoxValues;
+    //These are the combo box fields for each individual combobox
+    JComboBox<String> schComboBox, srtComboBox, trgComboBox,
+        tyComboBox;
+    // the JFileeChooser allows the user to select any file for use in the program
+    JFileChooser chooser;
+    //The scanner is used to parse information in the file
+    Scanner scanIn;
+    // File is Used to obtain desired file for file chooser code and potion of program
+    File selFileInput;
+        //hashShip variable created in  initialization of hash map
+        HashMap<Integer, ShipCMSC335> hashShip = new HashMap<>();
+        //hashDock variable created in initialization of hash map
+	HashMap<Integer, DockCMSC335> hashDock = new HashMap<>();
+        //hashPort variable created in initialization of hash map
+	HashMap<Integer, SeaPortCMSC335> hashPort = new HashMap<>();
+        //String List for combo box selections in the form of variables used.
+	String[] sortFileStrings = { "totalWeight", "hullLength", "hullWidth", "depthDraft", "Name" };;
+        //title variable for title of program window
+        String title;
+        //int data type variable for width of program window
+        int width;
+        //int data type variable for height of program window
+        int height;
+
+   
+    
+    protected SeaPortsProgramCMSC335() {
+        //Setting the size, title and clode operation of the program window
+        //This code is handled first in the GUI for the window
+        setTitle("Sea Ports Program CMSC335");
+        //Setting size of the window
+        setSize(1300, 900);
+        //setting close operation of the window
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setting the window to be visible
+        setVisible(true);
+
+    }
+
+    
