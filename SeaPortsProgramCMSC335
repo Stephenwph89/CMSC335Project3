@@ -109,5 +109,160 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         setVisible(true);
 
     }
+    
+    //SETTERS AND GETTERS EVERYBODY!
+
+    //Constructor holding parameters
+    protected SeaPortsProgramCMSC335(String title, int width, int height) {
+        super(title);
+        //setter window title
+        this.setTitle(title);
+        //setter window width
+        this.setWidth(width);
+        //setter window height
+        this.setHeight(height);
+    }
+
+    //title setter
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    //width setter
+    public void setWidth(int width) {
+            //width of window
+            this.width = 1300;
+            this.width = width;
+    }
+
+   //height setter
+    public void setHeight(int height) {
+            //height of window
+            this.height = 900;
+            this.height = height;
+       
+    }
+
+    //title getter
+    @Override
+    public String getTitle() {
+        //returning the title
+        return this.title;
+    }
+
+    //width getter
+    @Override
+    public int getWidth() {
+        //returning the width
+        return this.width;
+    }
+
+    //height getter
+    @Override
+    public int getHeight() {
+        //returning the height
+        return this.height;
+    }
+
+    
+    private void GUI() {
+        //creates border layout for main panel
+        this.mainPanel = new JPanel(new BorderLayout());  
+        //creates grid lay out for options panel
+        this.optPanel = new JPanel(new GridLayout(1, 10, 5, 5)); 
+        //creates grid layout for world panel
+        this.wPanel = new JPanel(new GridLayout(2, 1, 5, 5));   
+        // creates border lay out for tree panel
+        this.tPanel = new JPanel(new BorderLayout());  
+        // creates grid layout for tree buttons panel
+        this.tButPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        // creates grid layout for jobs panel
+        this. jPanel = new JPanel(new GridLayout(2, 1, 5, 5));  
+        // creates grid  lay out for jobs scroll pane
+        this.jobsScroll = new JPanel(new GridLayout(0, 1));    
+        // creates a grid lay out for threads panel
+        this.logsPanel = new JPanel(new GridLayout(1, 2, 5, 5));      
+
+        
+
+        // These are the buttons for the options menu
+        //read button
+        this.rdButton = new JButton("Read in File");
+        //search button
+        this.schButton = new JButton("Search in File");
+        //sort 
+        this.srtButton = new JButton("Sort Through File");
+
+        // creates the search field
+        this.schField = new JTextField("", 10);
+        //creates the label for the search field
+        this.schLabel = new JLabel("Search Information:", JLabel.RIGHT);
+
+        // creates the sort label
+        this.srtLabel = new JLabel("Sort Information:", JLabel.RIGHT);
+
+        //creating Strings for the values for the sort combo box
+        this.srtBoxValues = new String[] {
+            "Ports",
+            "Name",
+            "totalWeight",
+            "hullLength",
+            "hullWidth",
+            "depthDraft"
+        };
+        //creating new combo box for sorting with assigned sort values
+        this.srtComboBox = new JComboBox<>(this.srtBoxValues);
+        //creating Strings for the values for the search combo box
+        this.schBoxValues= new String[] {
+            "Person / Ship / Port",
+            "Number Of Index",
+            "Person Skill Set"
+        };
+        //creating new combo box for searching with assigned search values
+        this.schComboBox = new JComboBox<>(this.schBoxValues);
+        //creating Strings for the values for the target combo box
+        this.trgBoxValues = new String[] {
+            "Hold Que",
+            "Cargo / Passenger",
+            "Dock",
+            "Person",
+            "Job"
+        };
+        //Creating combo box for targets with assigned target values
+        this.trgComboBox = new JComboBox<>(this.trgBoxValues);
+        //creating Strings for the values for the type combo box
+        this.tyBoxValues = new String[] {
+            "Name",
+            "totalWeight",
+            "hullLength",
+            "hullWidth",
+            "depthDraft"
+        };
+        //Creating combo box for types with assigned type values
+        this.tyComboBox = new JComboBox<>(this.tyBoxValues);
+
+        //adding all of the buttons to the options panel
+        //adding read button
+        this.optPanel.add(this.rdButton);
+        //adding search label
+        this.optPanel.add(this.schLabel); 
+        //adding search field
+        this.optPanel.add(this.schField); 
+        //adding the search combo box
+        this.optPanel.add(this.schComboBox);   
+        //adding the search button
+        this.optPanel.add(this.schButton);  
+        //adding the sort label
+        this.optPanel.add(this.srtLabel);    
+        //addin the sort combo box
+        this.optPanel.add(this.srtComboBox);
+        //adding the target combo box
+        this.optPanel.add(this.trgComboBox);
+        //adding the type combo box
+        this.optPanel.add(this.tyComboBox);  
+        //adding the sort button
+        this.optPanel.add(this.srtButton);         
+
 
     
