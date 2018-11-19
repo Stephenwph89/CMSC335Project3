@@ -562,6 +562,243 @@ final class SeaPortsProgramCMSC335 extends JFrame {
                 break;
         }
     }
+//assemble method
+    private String assemble(int index, String target) {
+
+        //Variable declarations and definitions for assemble method
+        Method param;
+        String strParam, methName;
+        String strResult = "";
+
+        //index 0 for name and index
+        methName = (index == 0) ? "getName" : "getIndex";
+
+        try {
+            //either or for param
+            param = ThingCMSC335.class.getDeclaredMethod(methName);
+            //for loop get all things from world
+            for (ThingCMSC335 item : this.world.getAllThings()) {
+
+                //integer ---> string
+                strParam = "" + param.invoke(item);
+                //if the parameter is equal to the result get me the target
+                if (strParam.equals(target)) {
+                    strResult += "> " + item.getName() + " " + item.getIndex() + " ("
+                        + item.getClass().getSimpleName() + ")\n";
+                }
+            }
+        } catch (
+                //Catching some exceptions
+            NoSuchMethodException |
+            SecurityException |
+            IllegalAccessException |
+            IllegalArgumentException |
+            InvocationTargetException ex
+        ) {
+            //error print out for exceptions
+            System.out.println("Error: " + ex);
+        }
+        //return that STRING!
+        return strResult;
+    }
+
+    //display method
+    private void display(String strResults, String target) {
+        //if statement results equal ""
+        if (strResults.equals("")) {
+            //append string for search area
+            this.searchArea.append("ERROR: '" + target + "'your target was not found.\n\n");
+            //else statement
+        } else {
+            //append string for search area
+            this.searchArea.append("Results'" + target + "'\n"
+                + strResults + "\n");
+        }
+    }
+    //sort world method
+    private void sortWorld() {
+
+        //Variable Declarations for sort world method
+        String Port, Target, Type, result, fieldName, listName;
+        Method Field, List;
+        ArrayList<ThingCMSC335> thingList, retrieveList;
+        HashMap<String, String> typeMap, targetMap;
+
+        //hashmap for type
+        typeMap = new HashMap<String, String>() {{
+            //get the number of index
+            put("Name", "Number Of Index");
+            //get the weight
+            put("totalWeight", "gettotalWeight");
+            //get the length
+            put("hullLength", "gethullLength");
+            //get the width
+            put("hullWidth", "gethullWidth");
+            //get te draft
+            put("depthDraft", "getdepthDraft");
+        }};
+        //hashmap for target
+        targetMap = new HashMap<String, String>() {{
+            //get the Que
+            put("Que", "getQue");
+            //get the Ships
+            put("Ship", "getShips");
+            //get the docks
+            put("Dock", "getDocks");
+            //get the persons
+            put("Person", "getPersons");
+            //get the ships
+            put("Job", "getShips"); 
+        }};
+
+        //Variable Definitions for sort workd method
+        //port item toString
+        Port = this.srtComboBox.getSelectedItem().toString();
+        //target item to stirng
+        Target = this.trgComboBox.getSelectedItem().toString();
+        //type item to string
+        Type = this.tyComboBox.getSelectedItem().toString();
+        fieldName = typeMap.get(Type);
+        listName = targetMap.get(Target);
+        result = "";
+        thingList = new ArrayList<>();
+        //try catch
+        try {
+            //get list name
+            List = SeaPortCMSC335.class.getDeclaredMethod(listName);
+            //if statement either or for Que or Name
+            if (Target.equals("Que") && !Type.equals("Name")) {
+                //get fieldName
+                Field = ShipCMSC335.class.getDeclaredMethod(fieldName);
+                //else statement
+            } else {
+                //get field name
+                Field = ThingCMSC335.class.getDeclaredMethod(fieldName);
+            }
+            //if statement for port equals "ports"
+            if (Port.equals("Ports")) {
+                //ports is lowercase in field
+                Port = Port.toLowerCase();
+                //for loop get new port from world
+                for (SeaPortCMSC335 newPort : world.getPorts()) {
+                    //invoke the new port
+                    retrieveList = (ArrayList<ThingCMSC335>) List.invoke(newPort);
+                    //add all ports to retrieved list
+                    thingList.addAll(retrieveList);
+                }
+                //else statement
+            } else {
+                //for loop new port to get ports from world
+                for (SeaPortCMSC335 newPort : this.world.getPorts()) {
+                    
+                    //if statement get name from ports
+                    if (newPort.getName().equals(Port)) {
+                        //invoke the new port
+                        retrieveList = (ArrayList<ThingCMSC335>) List.invoke(newPort);
+                          //add all ports to retrieved list
+                        thingList.addAll(retrieveList);
+                    }
+                }
+            }
+
+            //if statement if the target is job
+            if (Target.equals("Job")) {
+                ArrayList<JobCMSC335> jobsList = new ArrayList<>();
+                //for loop iterator has next thingsList
+                for (Iterator<ThingCMSC335> iterator = thingList.iterator(); iterator.hasNext();) {
+                    ShipCMSC335 newShip = (ShipCMSC335) iterator.next();
+                    //for loop new job new ships to add new job
+                    for (JobCMSC335 newJob : newShip.getJobs()) {
+                        jobsList.add(newJob);
+                    }
+                }
+                //remove ship instances
+                thingList.clear();
+                //replace any with job
+                thingList.addAll(jobsList); 
+            }
+
+            //if no results for information found
+            //if statement
+            if (thingList.isEmpty()) {
+                //string for no results found
+                result += ">There are no results.\n";
+                //else statement
+            } else {
+                //collections sort the results
+                Collections.sort(thingList, new QueCMSC335(Type));
+
+                //grab all results relevent to data
+                for (ThingCMSC335 newThing : thingList) {
+                    //result invoking new thing
+                    result += "> " + newThing.getName() + " (" + Field.invoke(newThing) + ")\n";
+                }
+            }
+            //catching exceptions
+        } catch (
+            NoSuchMethodException |
+            SecurityException |
+            IllegalAccessException |
+            IllegalArgumentException |
+            InvocationTargetException ex
+        ) {
+            //printing caught exceptions
+            System.out.println("ERROR: " + ex);
+        }
+
+        // formating the searches for earch area
+        this.searchArea.append("RESULTS FOR SORTED INFO'" + Target + " "
+            + Type.toLowerCase() + " in " + Port + "'\n" + result + "\n");
+    }
+
+   //nodes method
+    private void nodes(String methodName) {
+
+       
+        //Variable declaration for nodes method
+        Method toggle;
+           //try catch
+            try {
+                //get integer type through use of toggle
+            toggle = JTree.class.getDeclaredMethod(methodName, Integer.TYPE);
+            //for loop as long at i is less than row count i++
+            for (int i = 0; i < this.mainJTree.getRowCount(); i++) {
+                //then invoke i to mainJTree
+                toggle.invoke(this.mainJTree, i);
+            }
+            //catching exceptions
+        } catch (
+            NoSuchMethodException |
+            SecurityException |
+            IllegalAccessException |
+            IllegalArgumentException |
+            InvocationTargetException ex
+        ) {
+            //printing exceptions caught
+            System.out.println("ERROR: " + ex);
+        }
+    }
+
+    //display details method
+    private void displayDetails() {
+
+        //if statement USER MUST BUILD WORLD
+        if (this.world == null || this.scanIn == null) {
+            this.displayErrorPopup("ERROR:NO WORLD BUILT. Please build the world again.");
+            //retun the error
+            return;
+            //else if statement USER MUST SELECT ELEMENT
+        } else if (this.mainJTree.getLastSelectedPathComponent() == null) {
+            this.displayErrorPopup("ERROR:SELECT AN ELEMENT.");
+            //return the error
+            return;
+            //esle if statement USER DID NOT SELECT PROPER NODE
+        } else if (Arrays.asList(new String[] {"Que", "Docks", "Ships", "Persons", "World"})
+                .contains(this.mainJTree.getLastSelectedPathComponent().toString())) {
+            this.displayErrorPopup("ERROR: IMPROPER NODE SELECTION. SELECT ANOTHR NODE.");
+            //return the error
+            return;
+        }
 
 
     
