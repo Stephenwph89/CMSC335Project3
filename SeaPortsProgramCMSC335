@@ -263,6 +263,305 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         this.optPanel.add(this.tyComboBox);  
         //adding the sort button
         this.optPanel.add(this.srtButton);         
+//creating the JTree Object
+        this.mainJTree = new JTree();
+        //setting the table model for the Tree
+        this.mainJTree.setModel(null);
+        //getting selection model instance
+        //setting selection mode instance
+        this.mainJTree.getSelectionModel().setSelectionMode(
+             //current state of selection for the tree component   
+            TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        // adding mainJTree to the scroll pane
+        this.treePane = new JScrollPane(this.mainJTree);
+
+        //These are the mainJTree buttons
+        //this button is used to expand data
+        this.expButton = new JButton("Expand Data");
+        //this button is used to collapse data
+        this.colButton = new JButton("Collapse Data");
+        //this button is used to retrieve more data
+        this.detButton = new JButton("More Data");
+
+         //Here we are adding the buttons to the panel
+         //This will expand nodes
+        this.tButPanel.add(this.expButton);   
+        //This will collapse nodes
+        this.tButPanel.add(this.colButton); 
+        //This will retrieve details for selection
+        this.tButPanel.add(this.detButton);     
+
+        
+        //This is adding the tree with border lay out center
+        this.tPanel.add(this.treePane, BorderLayout.CENTER);
+        //This is adding the tree button panel with border layout south
+        this.tPanel.add(this.tButPanel, BorderLayout.SOUTH);
+
+        //This is creating the text area for search results
+        this.searchArea = new JTextArea();
+        //This is setting the font to the text area
+        this.searchArea.setFont(new Font("Times New Roman", 0, 12));
+        //This is to wrap the text for the text area
+        this.searchArea.setLineWrap(true);
+
+        //this will add search results to the search area
+        this.searchPane = new JScrollPane(this.searchArea);
+
+        //adding the tree panel to workd panel 
+        this.wPanel.add(this.tPanel);
+        //adding the search pane to the world panel
+        this.wPanel.add(this.searchPane);
+
+        //Creating the area for the job status events
+        this.statusArea = new JTextArea();
+       //setting the font for the status area
+        this.statusArea.setFont(new Font("Times New Roman", 0, 11));
+        //wrapping the text for the status area
+        this.statusArea.setLineWrap(true);
+
+        //creating the jobs area
+        this.jobsArea = new JTextArea();
+        //setting font for the jobs area
+        this.jobsArea.setFont(new Font("Times New Roman", 0, 11));
+        ///wrapping the text for the jobs area
+        this.jobsArea.setLineWrap(true);
+
+        //adding results text to jobs area
+        this.poolPane = new JScrollPane(this.jobsArea);
+        //adding status pane to status area
+        this.statusPane = new JScrollPane(this.statusArea);
+        //adding a scroll pane for jobs area
+        this.jobsPane = new JScrollPane(this.jobsScroll);
+
+        //adding the logs panel to status pane
+        this.logsPanel.add(this.statusPane);
+        //adding the logs panel to the pool pane
+        this.logsPanel.add(this.poolPane);
+        //adding jobs panel to jobs pane
+        this. jPanel.add(this.jobsPane);
+        //adding jobs panel to logs panel
+        this. jPanel.add(this.logsPanel);
+
+        //On the main panel we want to add the options panel with border lay out north
+        this.mainPanel.add(this.optPanel, BorderLayout.NORTH);
+        //On the main panel we want to add the world panel with border layout west
+        this.mainPanel.add(this.wPanel, BorderLayout.WEST);
+        //On the main panel we want to add the jobs panel with border layout center
+        this.mainPanel.add(this. jPanel, BorderLayout.CENTER);
+
+        //The whole point of this is to set a border to the areas and to set a title to the areas
+        //setter for option panel title and border
+        this.optPanel.setBorder(BorderFactory.createTitledBorder("Options"));
+        //setter for option panel title and border
+        this.tPanel.setBorder(BorderFactory.createTitledBorder("Tree"));
+        //setter for option panel title and border
+        this.jobsPane.setBorder(BorderFactory.createTitledBorder("Jobs"));
+        //setter for option panel title and border
+        this.searchPane.setBorder(BorderFactory.createTitledBorder("Searching & Sorting"));
+        //setter for option panel title and border
+        this.statusPane.setBorder(BorderFactory.createTitledBorder("Job Logs"));
+        //setter for option panel title and border
+        this.poolPane.setBorder(BorderFactory.createTitledBorder("Job Pool"));
+        //setter for option panel title and border
+        this.mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        //making border areas of color gray
+        //status area border gray
+        this.statusArea.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        //jobs area border gray
+        this.jobsArea.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        //search area border gray
+        this.searchArea.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+        //setters for white background and gray border for jobs scroll pane
+        //setter border gray
+        this.jobsScroll.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        //setter background white
+        this.jobsScroll.setBackground(Color.WHITE);
+
+        //target combo box action liistener
+        this.trgComboBox.addActionListener((ActionEvent e) -> {
+            //sorting when button is clicked method
+            this.Sorting();
+        });
+
+        //read button action listener
+        this.rdButton.addActionListener((ActionEvent e) -> {
+            //read the file contents when clicked method
+            this.readIn();
+        });
+
+        //search button action listener
+        this.schButton.addActionListener((ActionEvent e) -> {
+            //search through world contents when clicked method
+            this.searchIn();
+        });
+
+        //sort button action listener
+        this.srtButton.addActionListener((ActionEvent e) -> {
+            //sort through world contents when clicked mehtod
+            this.sortWorldContents();
+        });
+
+        //expand buttons action listener
+        this.expButton.addActionListener((ActionEvent e) -> {
+            //expand the nodes when clicked method
+            this.toggleNodes("expand");
+        });
+
+        //collapse button action listener
+        this.colButton.addActionListener((ActionEvent e) -> {
+            //collapse nodes when clicked method
+            this.toggleNodes("collapse");
+        });
+
+        //details button action listener
+        this.detButton.addActionListener((ActionEvent e) -> {
+            //display the details when clicked method
+            this.displaySelectionDetails();
+        });
+
+        //setting the size, visibility, title etc...
+        //getter for JFrame title
+        this.mainFrame = new JFrame(this.getTitle());
+        //setter for main panel
+        this.mainFrame.setContentPane(this.mainPanel);
+        //setter for frame size
+        this.mainFrame.setSize(this.getWidth(), this.getHeight());
+        //setter for frame visible
+        this.mainFrame.setVisible(true);
+        //seter for close operation to close window when user clicks x
+        this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    //provide sorting method for combo box
+    private void Sorting() {
+        //removeAllItems method
+        this.tyComboBox.removeAllItems();
+        //adding name to combo box
+        this.tyComboBox.addItem("Name");
+        //if statement get index for target combo box
+        if (this.trgComboBox.getSelectedIndex() == 0) { 
+            //add totalWeight to type combo box
+            this.tyComboBox.addItem("totalWeight");
+            //add hullWidth to type combo box
+            this.tyComboBox.addItem("hullWidth");
+            //add hullLength to type combo box
+            this.tyComboBox.addItem("hullLength");
+            //add depthDraft to type combo box
+            this.tyComboBox.addItem("depthDraft");
+        }
+    }
+
+    
+    private void SeaPortSorting() {
+        //removeAllItems method
+        this.srtComboBox.removeAllItems();
+        //adding ports to sort combo box
+        this.srtComboBox.addItem("Ports");
+        //getting Name from Que via colletion sorting
+        Collections.sort(this.world.getPorts(), new QueCMSC335("Name"));
+        //if statement ports size is greater than 1
+        if (this.world.getPorts().size() > 1) {
+            //for loop seaport gets ports
+            this.world.getPorts().forEach((newPort) -> {
+                //sort combo box add new port name
+                this.srtComboBox.addItem((String) newPort.getName());
+            });
+        }
+    }
+
+    
+    private void readIn() {
+
+        // These are the variable declarations for the file chooser
+        int result;
+        FileReader fileReader;
+        
+
+        /**
+         * I was not sure how to implement a file chooser So, I looked it up,
+         * and obtained idea from FileFilter for JFileChooser. (n.d.). Retrieved
+         * October 29, 2018, from
+         * https://stackoverflow.com/questions/20411919/filefilter-for-jfilechooser
+         *
+         * Another website used for help was Java Code Examples for
+         * javax.swing.filechooser.FileNameExtensionFilter. (n.d.). Retrieved
+         * October 29, 2018, from
+         * https://www.programcreek.com/java-api-examples/javax.swing.filechooser.FileNameExtensionFilter
+         *
+         * Below is the JFileChooser Code which enables a user to select a file
+         *
+         */
+
+         //Code for the file chooser with start file as per rubric
+        this.chooser = new JFileChooser(".");
+        //int reult used for the open dialog of the JFrame
+        result = this.chooser.showOpenDialog(new JFrame());
+        //if, try, catch statment for result variable to approve option selected
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                fileReader = new FileReader(this.chooser.getSelectedFile());
+                //Scan in file selected
+                this.scanIn = new Scanner(fileReader);
+            } catch (FileNotFoundException ex) {
+                //displays message if user selected incorrect file
+                this.displayErrorPopup("\"The File selected is not found. Select another File Please.");
+            }
+        }
+
+        //All jobs threads stop if from another world
+        if (this.world != null) {
+            //clear all the jobs if above
+            this.clearAllJobs();
+        }
+        //Scan in to instance of world
+        this.world = new WorldCMSC335(this.scanIn);        
+    }
+    //search in method
+    private void searchIn() {
+        //Variables declared for the search in method
+        String results, search;
+        int selection;
+
+        //definitions for variables
+        results = "";
+        search = this.schField.getText().trim();
+        selection = this.schComboBox.getSelectedIndex();
+
+        // switch case selection
+        switch(selection) {
+            //name
+            case 0:
+            //index    
+            case 1: 
+                //assemble the results for the search
+                results = this.assemble(selection, search);
+                //display the results
+                this.display(results, search);
+                break;
+                 //skill
+            case 2: 
+                //for loop get ports
+                for (SeaPortCMSC335 port : this.world.getPorts()) {
+                    //for loop get persons
+                    for (PersonCMSC335 person : port.getPersons()) {
+                        //if statement for getting skills via search
+                        if (person.getSkill().equals(search)) {
+                            //get index and name for results display in string
+                            results += "> " + person.getName() + " (id #" + person.getIndex()
+                                + ")\n";
+                        }
+                    }
+                }
+                //display the results
+                this.display(results, search);
+                break;
+            default:
+                break;
+        }
+    }
 
 
     
