@@ -1011,4 +1011,88 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //return the results of the map
         return resMap;
     }
-    
+    //jobs method
+    private void Jobs() {
+        //for loop get ports
+        for (SeaPortCMSC335 port : this.world.getPorts()) {
+            //for loop get docks form port
+            for (DockCMSC335 dock : port.getDocks()) { 
+                //if statement for get ship, get jobs / if dock ship has no job
+                if (dock.getShip().getJobs().isEmpty()) { 
+                    //append the status area to re-launch hsip / get ship and name
+                    this.statusArea.append("re-launch ship" + dock.getShip().getName()
+                            //from the dock in the port
+                        + " from " + dock.getName() + " in " + port.getName() + "\n");
+                    //set the next ship
+                    dock.setShip(null);
+                    
+                    //while loop to get que while que is empty
+                    while (!port.getQue().isEmpty()) {
+                        //while a ship is waiting pll in a new ship
+                        ShipCMSC335 newShip = port.getQue().remove(0); 
+                        //if statement to get jobs if is empty
+                        if (!newShip.getJobs().isEmpty()) { 
+                            //set a new ship at the dock
+                            dock.setShip(newShip); 
+                            //append the status area / ships is parked / get ship / get name / at dock / in port
+                            this.statusArea.append("Ship is parked" + dock.getShip().getName()
+                                    //the ship is at a dock in the port
+                                + " at " + dock.getName() + " in " + port.getName() + "\n");
+                            break;
+                        }
+                    }
+                }
+               
+                //get ship and set to dock
+                //setter for processing ships
+                dock.getShip().setDock(dock);
+            }
+
+            //collected method returns a set and reduce method via filter
+            port.getShips().stream().filter((ship) -> (!ship.getJobs().isEmpty())).forEachOrdered((ship) -> {
+               //for loop get the jobs if jobs
+                for (JobCMSC335 job : ship.getJobs()) { 
+                    //add the job to panel
+                    this.jobsScroll.add(job.getJobAsPanel());
+                    //recalculate lay out
+                    this.jobsScroll.revalidate();
+                    //change visible property of component
+                    this.jobsScroll.repaint();
+                    //set the status to status area
+                    job.setStatusLog(this.statusArea);
+                    //set the worker log to jobs area
+                    job.setWorkerLog(this.jobsArea);
+                    //begin thread with jobs
+                    job.startJob(); 
+                }
+            }); 
+        }
+    }
+
+    //clear jobs method
+    private void clearJobs() {
+        //remove the job panels
+        this.jobsScroll.removeAll(); 
+        //get ports, get ships, get jobs
+        this.world.getAllThings().forEach((thing) -> {  
+            //if statement gte only jobs
+            if (thing instanceof JobCMSC335) {      
+                // set end of job to true
+                ((JobCMSC335) thing).endJob();                
+            }
+        });
+    }
+
+    //display error method
+    private void displayError(String message) {
+        //show message dialog for errors
+        JOptionPane.showMessageDialog(this.mainFrame, message, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+
+    //main method Yo!
+    public static void main(String[] args) {
+        SeaPortsProgramCMSC335 CMSC335 = new SeaPortsProgramCMSC335();
+        //construct that GUI
+        CMSC335.GUI();
+    }
+}
