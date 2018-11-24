@@ -1,18 +1,19 @@
-
 /**
  *Stephen Hamilton
  *Class: CMSC 335
  *Section: 7981
  *Instructor: Dinsoreanu, Mihaela
  *Assignment: Project 3 Sea Port
- * Purpose: The purpose of this project is to 
- * allow the user to Create a thread for each job, 
+ * Purpose: The purpose of this project is to
+ * allow the user to Create a thread for each job,
  * and to create a GUI to show the
  * progress of each job.
- * 
+ *
  *Date Started: 11/18/2018
  *Due Date: 12/02/2018
  */
+
+
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -33,13 +34,19 @@ import javax.swing.JFileChooser;
 
 
 final class SeaPortsProgramCMSC335 extends JFrame {
-    
+     //I HAD TO ADD MUCH MUCH MORE TO THE GUI IN ORDER TO ACCOMPLISH ANYTHING 
+    //WITH PROJECT 3 and 4
     //EXPANDED UPON THE GUI FOR PROJECTS 3, 4
-    
     //This creates an instance of world in parent class
     WorldCMSC335 world;
+    //title variable for title of program window
+    String title;
+    //int data type variable for width of program window
+    int width;
+    //int data type variable for height of program window
+    int height;
     //Variable Declarations
-     // ALL OF THESE FIELDS ARE EXPANDED UPON FROM PROJ 1 and 2 TO MAKE 3 and 4
+    // ALL OF THESE FIELDS ARE EXPANDED UPON FROM PROJ 1 and 2 TO MAKE 3 and 4
     //GUI FIELDS
     //main frame is the frame of the program
     JFrame mainFrame;
@@ -51,16 +58,16 @@ final class SeaPortsProgramCMSC335 extends JFrame {
     //Scroll panes for all areas were text appears so user can scroll through info
     //that appears in area for text
     JScrollPane treePane, searchPane, jobsPane,
-        statusPane, poolPane;
+            statusPane, poolPane;
     //The various panels to hold the various GUI Components
     JPanel mainPanel, optPanel, wPanel, tPanel, tButPanel, jPanel,
-        jobsScroll, logsPanel;
-      //JButton holds all buttons added to program thus far
-     //Read Button variable to read in file
-     //Sort buttton variable to sort through the information in the file.
-     //Search BUtton variable to search for "Things" in file
-    JButton  detButton, expButton,rdButton,
-        colButton, srtButton, schButton;
+            jobsScroll, logsPanel;
+    //JButton holds all buttons added to program thus far
+    //Read Button variable to read in file
+    //Sort buttton variable to sort through the information in the file.
+    //Search BUtton variable to search for "Things" in file
+    JButton dataButton, rdButton,
+            srtButton, schButton;
     //This is the label for the search text field
     JLabel schLabel, srtLabel;
     //text field in which the user can input information to search
@@ -70,48 +77,46 @@ final class SeaPortsProgramCMSC335 extends JFrame {
     //for the user to slect between different ship parameters, person jobs / names, ports,  etc...
     //The user can even select options to sort through information
     String[] schBoxValues, srtBoxValues, trgBoxValues,
-        tyBoxValues;
+            tyBoxValues;
     //These are the combo box fields for each individual combobox
     JComboBox<String> schComboBox, srtComboBox, trgComboBox,
-        tyComboBox;
+            tyComboBox;
     // the JFileeChooser allows the user to select any file for use in the program
     JFileChooser chooser;
     //The scanner is used to parse information in the file
     Scanner scanIn;
     // File is Used to obtain desired file for file chooser code and potion of program
     File selFileInput;
-        //hashShip variable created in  initialization of hash map
-        HashMap<Integer, ShipCMSC335> hashShip = new HashMap<>();
-        //hashDock variable created in initialization of hash map
-	HashMap<Integer, DockCMSC335> hashDock = new HashMap<>();
-        //hashPort variable created in initialization of hash map
-	HashMap<Integer, SeaPortCMSC335> hashPort = new HashMap<>();
-        //String List for combo box selections in the form of variables used.
-	String[] sortFileStrings = { "totalWeight", "hullLength", "hullWidth", "depthDraft", "Name" };;
-        //title variable for title of program window
-        String title;
-        //int data type variable for width of program window
-        int width;
-        //int data type variable for height of program window
-        int height;
-
+    //hashShip variable created in  initialization of hash map
+    
+    //String List for combo box selections in the form of variables used.
    
     
+    
+
+    //Constructor
+
     protected SeaPortsProgramCMSC335() {
         //Setting the size, title and clode operation of the program window
         //This code is handled first in the GUI for the window
-        setTitle("Sea Ports Program CMSC335");
+        super("Sea Ports Program CMSC335");
+        
+        this.setTitle("Sea Ports Program CMSC335");
         //Setting size of the window
-        setSize(1300, 900);
+        this.setWidth(1280);
+        
+        this.setHeight(720);
         //setting close operation of the window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setting the window to be visible
         setVisible(true);
 
     }
-    
-    //SETTERS AND GETTERS EVERYBODY!
 
+    
+    
+
+    //SETTERS AND GETTERS EVERYBODY!
     //Constructor holding parameters
     protected SeaPortsProgramCMSC335(String title, int width, int height) {
         super(title);
@@ -131,17 +136,17 @@ final class SeaPortsProgramCMSC335 extends JFrame {
 
     //width setter
     public void setWidth(int width) {
-            //width of window
-            this.width = 1300;
-            this.width = width;
+        //width of window
+        this.width = 1280;
+        this.width = width;
     }
 
-   //height setter
+    //height setter
     public void setHeight(int height) {
-            //height of window
-            this.height = 900;
-            this.height = height;
-       
+        //height of window
+        this.height = 720;
+        this.height = height;
+
     }
 
     //title getter
@@ -165,26 +170,24 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         return this.height;
     }
 
-    
-    private void GUI() {
+     private void constructGUI() {
+
         //creates border layout for main panel
-        this.mainPanel = new JPanel(new BorderLayout());  
+        this.mainPanel = new JPanel(new BorderLayout());
         //creates grid lay out for options panel
-        this.optPanel = new JPanel(new GridLayout(1, 10, 5, 5)); 
+        this.optPanel = new JPanel(new GridLayout(1, 10, 5, 5));
         //creates grid layout for world panel
-        this.wPanel = new JPanel(new GridLayout(2, 1, 5, 5));   
+        this.wPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         // creates border lay out for tree panel
-        this.tPanel = new JPanel(new BorderLayout());  
+        this.tPanel = new JPanel(new BorderLayout());
         // creates grid layout for tree buttons panel
         this.tButPanel = new JPanel(new GridLayout(1, 3, 10, 10));
         // creates grid layout for jobs panel
-        this. jPanel = new JPanel(new GridLayout(2, 1, 5, 5));  
+        this.jPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         // creates grid  lay out for jobs scroll pane
-        this.jobsScroll = new JPanel(new GridLayout(0, 1));    
+        this.jobsScroll = new JPanel(new GridLayout(0, 1));
         // creates a grid lay out for threads panel
-        this.logsPanel = new JPanel(new GridLayout(1, 2, 5, 5));      
-
-        
+        this.logsPanel = new JPanel(new GridLayout(1, 2, 5, 5));
 
         // These are the buttons for the options menu
         //read button
@@ -203,96 +206,98 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         this.srtLabel = new JLabel("Sort Information:", JLabel.RIGHT);
 
         //creating Strings for the values for the sort combo box
-        this.srtBoxValues = new String[] {
-            "Ports",
-            "Name",
-            "totalWeight",
-            "hullLength",
-            "hullWidth",
-            "depthDraft"
+        this.srtBoxValues = new String[]{
+            "All ports",
+           
         };
         //creating new combo box for sorting with assigned sort values
         this.srtComboBox = new JComboBox<>(this.srtBoxValues);
         //creating Strings for the values for the search combo box
-        this.schBoxValues= new String[] {
-            "Person / Ship / Port",
+        this.schBoxValues = new String[]{
+            //String Value for name of person, port, ship
+            "Person / Port / Ship",
+            //String value for index number that belongs to 
+            //ship person port dock
             "Number Of Index",
-            "Person Skill Set"
+            //String value for the skill set of person
+            "Skill Of Person"
         };
         //creating new combo box for searching with assigned search values
         this.schComboBox = new JComboBox<>(this.schBoxValues);
         //creating Strings for the values for the target combo box
-        this.trgBoxValues = new String[] {
-            "Hold Que",
-            "Cargo / Passenger",
-            "Dock",
-            "Person",
-            "Job"
+        this.trgBoxValues = new String[]{
+            //String value for search target Que
+            "Que",
+              //String value for search target Ships
+            "Ships",
+              //String value for search target Docks
+            "Docks",
+              //String value for search target Persons
+            "Persons",
+              //String value for search target Jobs
+            "Jobs"
         };
         //Creating combo box for targets with assigned target values
         this.trgComboBox = new JComboBox<>(this.trgBoxValues);
         //creating Strings for the values for the type combo box
-        this.tyBoxValues = new String[] {
-            "Name",
+        this.tyBoxValues = new String[]{
+            //String value for type name
+            "name",
+            //String value for type totalWeight
             "totalWeight",
+            //String value for type hullLength
             "hullLength",
+            //String value for type hullWidth
             "hullWidth",
+            //String value for type depthDraft
             "depthDraft"
         };
-        //Creating combo box for types with assigned type values
+
+      //Creating combo box for types with assigned type values
         this.tyComboBox = new JComboBox<>(this.tyBoxValues);
 
         //adding all of the buttons to the options panel
         //adding read button
         this.optPanel.add(this.rdButton);
         //adding search label
-        this.optPanel.add(this.schLabel); 
+        this.optPanel.add(this.schLabel);
         //adding search field
-        this.optPanel.add(this.schField); 
+        this.optPanel.add(this.schField);
         //adding the search combo box
-        this.optPanel.add(this.schComboBox);   
+        this.optPanel.add(this.schComboBox);
         //adding the search button
-        this.optPanel.add(this.schButton);  
+        this.optPanel.add(this.schButton);
         //adding the sort label
-        this.optPanel.add(this.srtLabel);    
+        this.optPanel.add(this.srtLabel);
         //addin the sort combo box
         this.optPanel.add(this.srtComboBox);
         //adding the target combo box
         this.optPanel.add(this.trgComboBox);
         //adding the type combo box
-        this.optPanel.add(this.tyComboBox);  
+        this.optPanel.add(this.tyComboBox);
         //adding the sort button
-        this.optPanel.add(this.srtButton);         
-//creating the JTree Object
+        this.optPanel.add(this.srtButton);
+
+        //creating the JTree Object
         this.mainJTree = new JTree();
         //setting the table model for the Tree
         this.mainJTree.setModel(null);
         //getting selection model instance
         //setting selection mode instance
         this.mainJTree.getSelectionModel().setSelectionMode(
-             //current state of selection for the tree component   
-            TreeSelectionModel.SINGLE_TREE_SELECTION);
+                //current state of selection for the tree component   
+                TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         // adding mainJTree to the scroll pane
         this.treePane = new JScrollPane(this.mainJTree);
 
-        //These are the mainJTree buttons
-        //this button is used to expand data
-        this.expButton = new JButton("Expand Data");
-        //this button is used to collapse data
-        this.colButton = new JButton("Collapse Data");
-        //this button is used to retrieve more data
-        this.detButton = new JButton("More Data");
-
-         //Here we are adding the buttons to the panel
-         //This will expand nodes
-        this.tButPanel.add(this.expButton);   
-        //This will collapse nodes
-        this.tButPanel.add(this.colButton); 
-        //This will retrieve details for selection
-        this.tButPanel.add(this.detButton);     
+        //this button is used to show data in the form of a table
+        this.dataButton = new JButton("Data Table");
 
         
+        //This will retrieve data for selection
+        this.tButPanel.add(this.dataButton);
+
         //This is adding the tree with border lay out center
         this.tPanel.add(this.treePane, BorderLayout.CENTER);
         //This is adding the tree button panel with border layout south
@@ -315,7 +320,7 @@ final class SeaPortsProgramCMSC335 extends JFrame {
 
         //Creating the area for the job status events
         this.statusArea = new JTextArea();
-       //setting the font for the status area
+        //setting the font for the status area
         this.statusArea.setFont(new Font("Times New Roman", 0, 11));
         //wrapping the text for the status area
         this.statusArea.setLineWrap(true);
@@ -339,16 +344,16 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //adding the logs panel to the pool pane
         this.logsPanel.add(this.poolPane);
         //adding jobs panel to jobs pane
-        this. jPanel.add(this.jobsPane);
+        this.jPanel.add(this.jobsPane);
         //adding jobs panel to logs panel
-        this. jPanel.add(this.logsPanel);
+        this.jPanel.add(this.logsPanel);
 
         //On the main panel we want to add the options panel with border lay out north
         this.mainPanel.add(this.optPanel, BorderLayout.NORTH);
         //On the main panel we want to add the world panel with border layout west
         this.mainPanel.add(this.wPanel, BorderLayout.WEST);
         //On the main panel we want to add the jobs panel with border layout center
-        this.mainPanel.add(this. jPanel, BorderLayout.CENTER);
+        this.mainPanel.add(this.jPanel, BorderLayout.CENTER);
 
         //The whole point of this is to set a border to the areas and to set a title to the areas
         //setter for option panel title and border
@@ -401,25 +406,13 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //sort button action listener
         this.srtButton.addActionListener((ActionEvent e) -> {
             //sort through world contents when clicked mehtod
-            this.sortWorldContents();
+            SeaPortsProgramCMSC335.this.sortWorld();
         });
 
-        //expand buttons action listener
-        this.expButton.addActionListener((ActionEvent e) -> {
-            //expand the nodes when clicked method
-            this.toggleNodes("expand");
-        });
-
-        //collapse button action listener
-        this.colButton.addActionListener((ActionEvent e) -> {
-            //collapse nodes when clicked method
-            this.toggleNodes("collapse");
-        });
-
-        //details button action listener
-        this.detButton.addActionListener((ActionEvent e) -> {
+        //data button action listener
+        this.dataButton.addActionListener((ActionEvent e) -> {
             //display the details when clicked method
-            this.displaySelectionDetails();
+            this.displayDetails();
         });
 
         //setting the size, visibility, title etc...
@@ -434,15 +427,14 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //seter for close operation to close window when user clicks x
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
-    //provide sorting method for combo box
+     //Sorting method
     private void Sorting() {
         //removeAllItems method
         this.tyComboBox.removeAllItems();
         //adding name to combo box
-        this.tyComboBox.addItem("Name");
+        this.tyComboBox.addItem("name");
         //if statement get index for target combo box
-        if (this.trgComboBox.getSelectedIndex() == 0) { 
+        if (this.trgComboBox.getSelectedIndex() == 0) {
             //add totalWeight to type combo box
             this.tyComboBox.addItem("totalWeight");
             //add hullWidth to type combo box
@@ -454,14 +446,15 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         }
     }
 
-    
+
+    //Sea POrt Sorting Method
     private void SeaPortSorting() {
         //removeAllItems method
         this.srtComboBox.removeAllItems();
         //adding ports to sort combo box
-        this.srtComboBox.addItem("Ports");
+        this.srtComboBox.addItem("All ports");
         //getting Name from Que via colletion sorting
-        Collections.sort(this.world.getPorts(), new QueCMSC335("Name"));
+        Collections.sort(this.world.getPorts(), new QueCMSC335("name"));
         //if statement ports size is greater than 1
         if (this.world.getPorts().size() > 1) {
             //for loop seaport gets ports
@@ -472,13 +465,11 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         }
     }
 
-    
     private void readIn() {
 
-        // These are the variable declarations for the file chooser
+       // These are the variable declarations for the file chooser
         int result;
         FileReader fileReader;
-        
 
         /**
          * I was not sure how to implement a file chooser So, I looked it up,
@@ -494,8 +485,7 @@ final class SeaPortsProgramCMSC335 extends JFrame {
          * Below is the JFileChooser Code which enables a user to select a file
          *
          */
-
-         //Code for the file chooser with start file as per rubric
+        //Code for the file chooser with start file as per rubric
         this.chooser = new JFileChooser(".");
         //int reult used for the open dialog of the JFrame
         result = this.chooser.showOpenDialog(new JFrame());
@@ -514,10 +504,43 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //All jobs threads stop if from another world
         if (this.world != null) {
             //clear all the jobs if above
-            this.clearAllJobs();
+            this.clearJobs();
         }
         //Scan in to instance of world
-        this.world = new WorldCMSC335(this.scanIn);        
+        this.world = new WorldCMSC335(this.scanIn);
+    
+        //This code stops users from selecting an improper file format
+        //if statement .getAllThing().isEmpty() checking is string is empty or not
+        if (this.world.getAllThings().isEmpty()) {
+            //setter for text to status pane
+            this.statusArea.setText("");
+            //setter for text to job area
+            this.jobsArea.setText("");
+            //setter for text to search area
+            this.searchArea.setText("");
+            //setter for text to Tree null
+            this.mainJTree.setModel(null);
+            //clear all jobs from area
+            this.clearJobs();
+            //world set to null
+            this.world = null;
+            ////display error message when incorrect or corrupt file selected
+            this.displayErrorPopup("ERROR: You either selected the incorrect file or the file may be corrupt.");
+            //else statement
+        } else {
+            //setter for text to status area
+            this.statusArea.setText("");
+            //setter for text to job area
+            this.jobsArea.setText("");
+            //setter for text to search area
+            this.searchArea.setText("");
+            //setter model to JTree
+            this.mainJTree.setModel(new DefaultTreeModel(this.world.toTree()));
+            //sea port sorting  method
+            this.SeaPortSorting(); 
+            //start all jobs method
+            this.Jobs();
+        }
     }
     //search in method
     private void searchIn() {
@@ -527,52 +550,54 @@ final class SeaPortsProgramCMSC335 extends JFrame {
 
         //definitions for variables
         results = "";
+        //this gets rid of leading and trailing spaces from text
+        //after gettin the text
         search = this.schField.getText().trim();
+        //get the selected value of the index
         selection = this.schComboBox.getSelectedIndex();
 
         // switch case selection
-        switch(selection) {
+        switch (selection) {
             //name
             case 0:
             //index    
-            case 1: 
+            case 1:
                 //assemble the results for the search
                 results = this.assemble(selection, search);
                 //display the results
                 this.display(results, search);
                 break;
-                 //skill
-            case 2: 
+            //skill
+            case 2:
                 //for loop get ports
                 for (SeaPortCMSC335 port : this.world.getPorts()) {
-                    //for loop get persons
-                    for (PersonCMSC335 person : port.getPersons()) {
-                        //if statement for getting skills via search
-                        if (person.getSkill().equals(search)) {
-                            //get index and name for results display in string
-                            results += "> " + person.getName() + " (id #" + person.getIndex()
-                                + ")\n";
-                        }
-                    }
+            //for loop get persons
+            //concatenate strings
+            results = port.getPersons().stream().filter((person) -> (person.getSkill().equals(search))).map((person) -> "> " + person.getName() + " (id #" + person.getIndex()
+                    + ")\n").reduce(results, String::concat); 
+           
                 }
-                //display the results
+                //display the results of the search
                 this.display(results, search);
                 break;
             default:
                 break;
         }
     }
-//assemble method
+    //assemble method
     private String assemble(int index, String target) {
 
         //Variable declarations and definitions for assemble method
+        //method variable
         Method param;
+        //string variable
         String strParam, methName;
+        //string variable
         String strResult = "";
 
         //index 0 for name and index
         methName = (index == 0) ? "getName" : "getIndex";
-
+        //try catch
         try {
             //either or for param
             param = ThingCMSC335.class.getDeclaredMethod(methName);
@@ -584,17 +609,16 @@ final class SeaPortsProgramCMSC335 extends JFrame {
                 //if the parameter is equal to the result get me the target
                 if (strParam.equals(target)) {
                     strResult += "> " + item.getName() + " " + item.getIndex() + " ("
-                        + item.getClass().getSimpleName() + ")\n";
+                            + item.getClass().getSimpleName() + ")\n";
                 }
             }
-        } catch (
-                //Catching some exceptions
-            NoSuchMethodException |
-            SecurityException |
-            IllegalAccessException |
-            IllegalArgumentException |
-            InvocationTargetException ex
-        ) {
+            //Catching some exceptions
+        } catch ( 
+                NoSuchMethodException
+                | SecurityException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException ex) {
             //error print out for exceptions
             System.out.println("Error: " + ex);
         }
@@ -607,131 +631,152 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //if statement results equal ""
         if (strResults.equals("")) {
             //append string for search area
+            //concatenate string
             this.searchArea.append("ERROR: '" + target + "'your target was not found.\n\n");
             //else statement
         } else {
             //append string for search area
+            //concatenante string
             this.searchArea.append("Results'" + target + "'\n"
-                + strResults + "\n");
+                    + strResults + "\n");
         }
     }
+
     //sort world method
     private void sortWorld() {
 
-        //Variable Declarations for sort world method
-        String Port, Target, Type, result, fieldName, listName;
-        Method Field, List;
-        ArrayList<ThingCMSC335> thingList, retrieveList;
-        HashMap<String, String> typeMap, targetMap;
+        //This code stops users from trying to load an incorrect file
+        if (this.world == null || this.scanIn == null) {
+            //error for incorrect file
+            this.displayErrorPopup("Error: Incorrect file. Please select proper file.");
+            //return the error
+            return;
+        }
 
-        //hashmap for type
-        typeMap = new HashMap<String, String>() {{
+       //Variable Declarations for sort world method
+       //String variables
+        String sortPort, sortTarget, sortType, result, fieldMethodName, listMethodName;
+        //method variables
+        Method getField, getList;
+        //ArrayLIst variables
+        ArrayList<ThingCMSC335> thingsList, gottenList;
+        //HashMap variables
+        HashMap<String, String> typeMethodMap, targetMethodMap;
+
+       //hash map for type
+        typeMethodMap = new HashMap<String, String>() {{ 
             //get the number of index
-            put("Name", "Number Of Index");
+            put("name", "getIndex");
             //get the weight
             put("totalWeight", "gettotalWeight");
             //get the length
             put("hullLength", "gethullLength");
             //get the width
             put("hullWidth", "gethullWidth");
-            //get te draft
+            //get the draft
             put("depthDraft", "getdepthDraft");
         }};
-        //hashmap for target
-        targetMap = new HashMap<String, String>() {{
+        //hash map for target
+        targetMethodMap = new HashMap<String, String>() {{
             //get the Que
             put("Que", "getQue");
             //get the Ships
-            put("Ship", "getShips");
-            //get the docks
-            put("Dock", "getDocks");
-            //get the persons
-            put("Person", "getPersons");
-            //get the ships
-            put("Job", "getShips"); 
+            put("Ships", "getShips");
+            //get the Docks
+            put("Docks", "getDocks");
+            //get the Persons
+            put("Persons", "getPersons");
+            //get the Ships Jobs
+            put("Jobs", "getShips"); 
         }};
 
         //Variable Definitions for sort workd method
-        //port item toString
-        Port = this.srtComboBox.getSelectedItem().toString();
-        //target item to stirng
-        Target = this.trgComboBox.getSelectedItem().toString();
-        //type item to string
-        Type = this.tyComboBox.getSelectedItem().toString();
-        fieldName = typeMap.get(Type);
-        listName = targetMap.get(Target);
+        //port item converted toString
+        sortPort = this.srtComboBox.getSelectedItem().toString();
+        //target item converted to string
+        sortTarget = this.trgComboBox.getSelectedItem().toString();
+        //type item converted to string
+        sortType = this.tyComboBox.getSelectedItem().toString();
+        //field item converted to sttring
+        fieldMethodName = typeMethodMap.get(sortType);
+        //target item converted to string
+        listMethodName = targetMethodMap.get(sortTarget);
+        //result string ""
         result = "";
-        thingList = new ArrayList<>();
-        //try catch
+        //create new array list via variable thingsList
+        thingsList = new ArrayList<>();
+        //Try Catch
         try {
+            
             //get list name
-            List = SeaPortCMSC335.class.getDeclaredMethod(listName);
+            getList = SeaPortCMSC335.class.getDeclaredMethod(listMethodName);
             //if statement either or for Que or Name
-            if (Target.equals("Que") && !Type.equals("Name")) {
-                //get fieldName
-                Field = ShipCMSC335.class.getDeclaredMethod(fieldName);
+            if (sortTarget.equals("Que") && !sortType.equals("name")) {
+                //get fieldMethodName
+                getField = ShipCMSC335.class.getDeclaredMethod(fieldMethodName);
                 //else statement
             } else {
-                //get field name
-                Field = ThingCMSC335.class.getDeclaredMethod(fieldName);
+                //get fieldMethodName
+                getField = ThingCMSC335.class.getDeclaredMethod(fieldMethodName);
             }
-            //if statement for port equals "ports"
-            if (Port.equals("Ports")) {
-                //ports is lowercase in field
-                Port = Port.toLowerCase();
+            //if statement for port equals "All ports"
+            if (sortPort.equals("All ports")) {
+                //All ports in field is entered lowercase
+                sortPort = sortPort.toLowerCase();
                 //for loop get new port from world
                 for (SeaPortCMSC335 newPort : world.getPorts()) {
-                    //invoke the new port
-                    retrieveList = (ArrayList<ThingCMSC335>) List.invoke(newPort);
+                    //invoke the new port via gottenList
+                    gottenList = (ArrayList<ThingCMSC335>) getList.invoke(newPort);          
                     //add all ports to retrieved list
-                    thingList.addAll(retrieveList);
+                    thingsList.addAll(gottenList);
                 }
                 //else statement
             } else {
                 //for loop new port to get ports from world
                 for (SeaPortCMSC335 newPort : this.world.getPorts()) {
-                    
-                    //if statement get name from ports
-                    if (newPort.getName().equals(Port)) {
+                   //if statement get name from ports
+                    if (newPort.getName().equals(sortPort)) {
                         //invoke the new port
-                        retrieveList = (ArrayList<ThingCMSC335>) List.invoke(newPort);
-                          //add all ports to retrieved list
-                        thingList.addAll(retrieveList);
+                        gottenList = (ArrayList<ThingCMSC335>) getList.invoke(newPort);
+                        //add all ports to gotten list
+                        thingsList.addAll(gottenList);
                     }
                 }
             }
 
-            //if statement if the target is job
-            if (Target.equals("Job")) {
+           //if statement if the target is Jobs
+            if (sortTarget.equals("Jobs")) {
+                //ArrayList created for Jobs List
                 ArrayList<JobCMSC335> jobsList = new ArrayList<>();
                 //for loop iterator has next thingsList
-                for (Iterator<ThingCMSC335> iterator = thingList.iterator(); iterator.hasNext();) {
+                for (Iterator<ThingCMSC335> iterator = thingsList.iterator(); iterator.hasNext();) {
+                    //iteration of new ship
                     ShipCMSC335 newShip = (ShipCMSC335) iterator.next();
-                    //for loop new job new ships to add new job
-                    for (JobCMSC335 newJob : newShip.getJobs()) {
+                    // new job new ships to add new job
+                    newShip.getJobs().forEach((newJob) -> {
+                        //add new jobs to jobsList
                         jobsList.add(newJob);
-                    }
+                    });
                 }
                 //remove ship instances
-                thingList.clear();
+                thingsList.clear(); 
                 //replace any with job
-                thingList.addAll(jobsList); 
+                thingsList.addAll(jobsList); 
             }
 
-            //if no results for information found
+           //if no results for information found
             //if statement
-            if (thingList.isEmpty()) {
+            if (thingsList.isEmpty()) {
                 //string for no results found
-                result += ">There are no results.\n";
+                result += ">Results are Empty!.\n";
                 //else statement
             } else {
-                //collections sort the results
-                Collections.sort(thingList, new QueCMSC335(Type));
+               //collections sort the results
+                Collections.sort(thingsList, new QueCMSC335(sortType));
 
-                //grab all results relevent to data
-                for (ThingCMSC335 newThing : thingList) {
-                    //result invoking new thing
-                    result += "> " + newThing.getName() + " (" + Field.invoke(newThing) + ")\n";
+                //for loop / grab all results relevent to data
+                for (ThingCMSC335 newThing : thingsList) {
+                    result += "> " + newThing.getName() + " (" + getField.invoke(newThing) + ")\n";
                 }
             }
             //catching exceptions
@@ -742,24 +787,23 @@ final class SeaPortsProgramCMSC335 extends JFrame {
             IllegalArgumentException |
             InvocationTargetException ex
         ) {
-            //printing caught exceptions
+            //printing error when exception caught
             System.out.println("ERROR: " + ex);
         }
 
-        // formating the searches for earch area
-        this.searchArea.append("RESULTS FOR SORTED INFO'" + Target + " "
-            + Type.toLowerCase() + " in " + Port + "'\n" + result + "\n");
+      // formating the searches for earch area
+        this.searchArea.append("Sort results for '" + sortTarget + " "
+            + sortType.toLowerCase() + " in " + sortPort + "'\n" + result + "\n");
     }
 
-   //nodes method
+    //nodes method
     private void nodes(String methodName) {
 
-       
         //Variable declaration for nodes method
         Method toggle;
-           //try catch
-            try {
-                //get integer type through use of toggle
+        //try catch
+        try {
+            //get integer type through use of toggle
             toggle = JTree.class.getDeclaredMethod(methodName, Integer.TYPE);
             //for loop as long at i is less than row count i++
             for (int i = 0; i < this.mainJTree.getRowCount(); i++) {
@@ -767,18 +811,17 @@ final class SeaPortsProgramCMSC335 extends JFrame {
                 toggle.invoke(this.mainJTree, i);
             }
             //catching exceptions
-        } catch (
-            NoSuchMethodException |
-            SecurityException |
-            IllegalAccessException |
-            IllegalArgumentException |
-            InvocationTargetException ex
-        ) {
+        } catch (NoSuchMethodException
+                | SecurityException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException ex) {
             //printing exceptions caught
             System.out.println("ERROR: " + ex);
         }
     }
 
+    
     //display details method
     private void displayDetails() {
 
@@ -793,23 +836,23 @@ final class SeaPortsProgramCMSC335 extends JFrame {
             //return the error
             return;
             //esle if statement USER DID NOT SELECT PROPER NODE
-        } else if (Arrays.asList(new String[] {"Que", "Docks", "Ships", "Persons", "World"})
+        } else if (Arrays.asList(new String[]{"Que", "Docks", "Ships", "Persons", "World"})
                 .contains(this.mainJTree.getLastSelectedPathComponent().toString())) {
             this.displayErrorPopup("ERROR: IMPROPER NODE SELECTION. SELECT ANOTHR NODE.");
             //return the error
             return;
         }
 
-//Variable declarations   
+        //Variable declarations   
         //string select variable
         String selection;
         //table variable for JTable
         JTable table;
         //variables for hashmap
         HashMap<String, String> defVal, shipVal, pShipVal,
-            cShipVal, perVal;
+                cShipVal, perVal;
         //linked hashmap variables
-        LinkedHashMap<String, String> Fields; 
+        LinkedHashMap<String, String> Fields;
         //Object variable
         Object[][] objResult;
         //String array variables
@@ -821,74 +864,84 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //get last node to string
         selection = this.mainJTree.getLastSelectedPathComponent().toString();
         //split selection string into substrings
-        nameArray= selection.split(" ");
+        nameArray = selection.split(" ");
         //eliminates leading and trailing spaces
         selection = nameArray[0].trim();
         //creating linked hashmap
         Fields = new LinkedHashMap<>();
         //String array for column value names
-        colNames = new String[] {"Field", "Value"};
+        colNames = new String[]{"Field", "Value"};
         //start of key count
         keyCount = 0;
 
         //These are default values for the hashmap string
-         defVal = new HashMap<String, String>() {{
-             //ID number and Index
-             // insert a key / values into map
-            put("Number ID", "getIndex");
-            // insert a key / values into map
-            //Name for hashmap string
-            put("Name", "getName");
-        }};
+        defVal = new HashMap<String, String>() {
+            {
+                //ID number and Index
+                // insert a key / values into map
+                put("Number ID", "getIndex");
+                // insert a key / values into map
+                //Name for hashmap string
+                put("Name", "getName");
+            }
+        };
 
         //These are the ship values for different parameters of the ship
-        shipVal = new HashMap<String, String>() {{
-            //for ships weight
-            // insert a key / values into map
-            put("totalWeight", "gettotalWeight");
-            //for hull length
-            // insert a key / values into map
-            put("hullLength", "gethullLength");
-            // for hull width
-            // insert a key / values into map
-            put("hullWidth", "gethullWidth");
-            //for depth of draft
-            // insert a key / values into map
-            put("depthDraft", "getdepthDraft");
-        }};
+        shipVal = new HashMap<String, String>() {
+            {
+                //for ships weight
+                // insert a key / values into map
+                put("totalWeight", "gettotalWeight");
+                //for hull length
+                // insert a key / values into map
+                put("hullLength", "gethullLength");
+                // for hull width
+                // insert a key / values into map
+                put("hullWidth", "gethullWidth");
+                //for depth of draft
+                // insert a key / values into map
+                put("depthDraft", "getdepthDraft");
+            }
+        };
 
         //These are values for the passenger ships
-        pShipVal = new HashMap<String, String>() {{
-            //rooms
-            // insert a key / values into map
-            put("Total rooms", "getNumberOfRooms");
-            //occupied
-            // insert a key / values into map
-            put("Occupied rooms", "getNumberOfOccupiedRooms");
-            //passengers
-            // insert a key / values into map
-            put("Passengers", "getNumberOfPassengers");
-        }};
+        pShipVal = new HashMap<String, String>() {
+            {
+                //rooms
+                // insert a key / values into map
+                put("Total rooms", "getNumberOfRooms");
+                //occupied
+                // insert a key / values into map
+                put("Occupied rooms", "getNumberOfOccupiedRooms");
+                //passengers
+                // insert a key / values into map
+                put("Passengers", "getNumberOfPassengers");
+            }
+        };
 
         //These are the cargo ship values
-        cShipVal = new HashMap<String, String>() {{
-            //volume value
-            // insert a key / values into map
-            put("Cargo volume", "getCargoVolume");
-            //cargo value
-            // insert a key / values into map
-            put("Cargo value", "getCargoValue");
-            //weight value
-            // insert a key / values into map
-            put("Cargo weight", "getCargoWeight");
-        }};
+        cShipVal = new HashMap<String, String>() {
+            {
+                //volume value
+                // insert a key / values into map
+                put("Cargo volume", "getCargoVolume");
+                //cargo value
+                // insert a key / values into map
+                put("Cargo value", "getCargoValue");
+                //weight value
+                // insert a key / values into map
+                put("Cargo weight", "getCargoWeight");
+            }
+        };
 
         //These are the person values
-        perVal = new HashMap<String, String>() {{
-            //skill value
-            // insert a key / values into map
-            put("Occupation", "getSkill");
-        }};
+        perVal = new HashMap<String, String>() {
+            {
+                //skill value
+                // insert a key / values into map
+                put("Occupation", "getSkill");
+            }
+        };
 
         //For loop to get all things from each class
         for (ThingCMSC335 newThing : this.world.getAllThings()) {
@@ -897,33 +950,33 @@ final class SeaPortsProgramCMSC335 extends JFrame {
                 //default value from thing class
                 //copies all of the elements
                 Fields.putAll(this.construct(newThing, ThingCMSC335.class,
-                     defVal));
+                        defVal));
                 //if statement to get instance of ship equal with shipval
                 if (newThing instanceof ShipCMSC335) {
                     //shipVal from ship class
                     //copies all of the elements
                     Fields.putAll(this.construct(newThing, ShipCMSC335.class,
-                        shipVal));
+                            shipVal));
                     //if statement to get instance of passneger ship with pShipVal
                     if (newThing instanceof PassengerShipCMSC335) {
                         //pShipVal from passenger ship class
                         //copies all of the elements
                         Fields.putAll(this.construct(newThing, PassengerShipCMSC335.class,
-                            pShipVal));
+                                pShipVal));
                         //else if statement to get instance of cargo ship with cShipVal
                         //copies all of the elements
                     } else if (newThing instanceof CargoShipCMSC335) {
                         //cShipVal from cargo ship class
                         //copies all of the elements
                         Fields.putAll(this.construct(newThing, CargoShipCMSC335.class,
-                            cShipVal));
+                                cShipVal));
                     }
                     //else if statement to get instance of person equal with perVal
                 } else if (newThing instanceof PersonCMSC335) {
                     //perVal from person class
                     //copies all of the elements
                     Fields.putAll(this.construct(newThing, PersonCMSC335.class,
-                        perVal));
+                            perVal));
                 }
             }
         }
@@ -931,27 +984,26 @@ final class SeaPortsProgramCMSC335 extends JFrame {
         //get size of map ---> key value
         objResult = new Object[Fields.size()][2];
         //for loop hashmap string / return set containing map entry values
-        for (HashMap.Entry<String,String> entry : Fields.entrySet()) {
+        for (HashMap.Entry<String, String> entry : Fields.entrySet()) {
             //get key value from entry set
             objResult[keyCount][0] = entry.getKey();
             //get key value form entry set
             objResult[keyCount][1] = entry.getValue();
             //count the key value
-           keyCount++;
+            keyCount++;
         }
 
         //Creates the JTable based on results
-       table = new JTable(objResult, colNames);
+        table = new JTable(objResult, colNames);
         //sets the size of the viewable scroll text area
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
         //sets the height of the fills view ports text area
         table.setFillsViewportHeight(true);
 
-       
         //This is to display the JTable
         JOptionPane.showMessageDialog(this.mainFrame, new JScrollPane(table), selection,
                 //plain for optionpane
-            JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     //contruct method for hashmap
@@ -994,55 +1046,54 @@ final class SeaPortsProgramCMSC335 extends JFrame {
                     //value fo result
                     methRes = String.valueOf(attributeRes);
                 }
-                 // put results map / insert a key / values into map
+                // put results map / insert a key / values into map
                 resMap.put(dispText, methRes);
             }
             //catch exceptions
-        } catch (
-            NoSuchMethodException |
-            SecurityException |
-            IllegalAccessException |
-            IllegalArgumentException |
-            InvocationTargetException ex
-        ) {
+        } catch (NoSuchMethodException
+                | SecurityException
+                | IllegalAccessException
+                | IllegalArgumentException
+                | InvocationTargetException ex) {
             //print exceptions as caught
             System.out.println("ERROR: " + ex);
         }
         //return the results of the map
         return resMap;
     }
+
     //jobs method
     private void Jobs() {
         //for loop get ports
         for (SeaPortCMSC335 port : this.world.getPorts()) {
             //for loop get docks form port
-            for (DockCMSC335 dock : port.getDocks()) { 
+            for (DockCMSC335 dock : port.getDocks()) {
                 //if statement for get ship, get jobs / if dock ship has no job
-                if (dock.getShip().getJobs().isEmpty()) { 
+                if (dock.getShip().getJobs().isEmpty()) {
                     //append the status area to re-launch hsip / get ship and name
                     this.statusArea.append("re-launch ship" + dock.getShip().getName()
                             //from the dock in the port
-                        + " from " + dock.getName() + " in " + port.getName() + "\n");
+                            + " from " + dock.getName() + " in " + port.getName() + "\n");
                     //set the next ship
                     dock.setShip(null);
-                    
+
                     //while loop to get que while que is empty
                     while (!port.getQue().isEmpty()) {
                         //while a ship is waiting pll in a new ship
-                        ShipCMSC335 newShip = port.getQue().remove(0); 
+                        ShipCMSC335 newShip = port.getQue().remove(0);
                         //if statement to get jobs if is empty
-                        if (!newShip.getJobs().isEmpty()) { 
+                        if (!newShip.getJobs().isEmpty()) {
                             //set a new ship at the dock
-                            dock.setShip(newShip); 
+                            dock.setShip(newShip);
                             //append the status area / ships is parked / get ship / get name / at dock / in port
                             this.statusArea.append("Ship is parked" + dock.getShip().getName()
                                     //the ship is at a dock in the port
-                                + " at " + dock.getName() + " in " + port.getName() + "\n");
+                                    + " at " + dock.getName() + " in " + port.getName() + "\n");
                             break;
                         }
                     }
                 }
-               
+
                 //get ship and set to dock
                 //setter for processing ships
                 dock.getShip().setDock(dock);
@@ -1050,8 +1101,8 @@ final class SeaPortsProgramCMSC335 extends JFrame {
 
             //collected method returns a set and reduce method via filter
             port.getShips().stream().filter((ship) -> (!ship.getJobs().isEmpty())).forEachOrdered((ship) -> {
-               //for loop get the jobs if jobs
-                for (JobCMSC335 job : ship.getJobs()) { 
+                //for loop get the jobs if jobs
+                for (JobCMSC335 job : ship.getJobs()) {
                     //add the job to panel
                     this.jobsScroll.add(job.getJobAsPanel());
                     //recalculate lay out
@@ -1063,36 +1114,37 @@ final class SeaPortsProgramCMSC335 extends JFrame {
                     //set the worker log to jobs area
                     job.setWorkerLog(this.jobsArea);
                     //begin thread with jobs
-                    job.startJob(); 
+                    job.startJob();
                 }
-            }); 
+            });
         }
     }
 
     //clear jobs method
     private void clearJobs() {
         //remove the job panels
-        this.jobsScroll.removeAll(); 
+        this.jobsScroll.removeAll();
         //get ports, get ships, get jobs
-        this.world.getAllThings().forEach((thing) -> {  
+        this.world.getAllThings().forEach((thing) -> {
             //if statement gte only jobs
-            if (thing instanceof JobCMSC335) {      
+            if (thing instanceof JobCMSC335) {
                 // set end of job to true
-                ((JobCMSC335) thing).endJob();                
+                ((JobCMSC335) thing).endJob();
             }
         });
     }
 
-    //display error method
-    private void displayError(String message) {
-        //show message dialog for errors
+    //displayerrorpopup method
+    private void displayErrorPopup(String message) {
+        //Display that error
         JOptionPane.showMessageDialog(this.mainFrame, message, "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 
-    //main method Yo!
+   //main method Yo!!
     public static void main(String[] args) {
-        SeaPortsProgramCMSC335 CMSC335 = new SeaPortsProgramCMSC335();
+        SeaPortsProgramCMSC335 newCollection = new SeaPortsProgramCMSC335();
         //construct that GUI
-        CMSC335.GUI();
+        newCollection.constructGUI();
     }
+
 }
