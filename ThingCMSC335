@@ -1,0 +1,113 @@
+/**
+ *Stephen Hamilton
+ *Class: CMSC 335
+ *Section: 7981
+ *Instructor: Dinsoreanu, Mihaela
+ *Assignment: Project 3 Sea Port
+ * Purpose: The purpose of this project is to 
+ * allow the user to Create a thread for each job, 
+ * and to create a GUI to show the
+ * progress of each job.
+ * 
+ *Date Started: 11/18/2018
+ *Due Date: 12/02/2018
+ */
+import java.util.Scanner;
+
+//class Thing comparing objects in class 
+class ThingCMSC335 implements Comparable<ThingCMSC335> {
+
+    //Variable Declarations for Thing class required by rubric
+    //int data type variable index for index numbers in file
+    private int index;
+    //data type String variable for name of ship, person, port
+    private String name;
+    //int data type variable for parent index
+    private int parent;
+    //Scanner Constructor for class thing
+    public ThingCMSC335(Scanner scanIn) {
+          //if statement for scanner cnst name
+        if (scanIn.hasNext()) {
+            this.setName(scanIn.next());
+        }
+         //if statement for scanner cnst index
+        if (scanIn.hasNextInt()) {
+            this.setIndex(scanIn.nextInt());
+        }
+         //if statement for scanner cnst index parent
+        if (scanIn.hasNextInt()) {
+            this.setParent(scanIn.nextInt());
+        }
+    }//end
+    //changes generated methods
+    ThingCMSC335(String sortType) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+    
+    //SETTERS AND GETTERS
+    
+    //setter for index
+    private void setIndex(int index) {
+        //object index
+        this.index = index;
+    }
+
+    //setter for name
+    private void setName(String name) {
+        //object name
+        this.name = name;
+    }
+
+    //setter for parent
+    private void setParent(int parent) {
+        //object parent
+        this.parent = parent;
+    }
+
+    //getter for index
+    protected int getIndex() {
+        //object index
+        return this.index;
+    }
+
+   //getter for name
+    protected String getName() {
+        //object name
+        return this.name;
+    }
+
+    //getter for parent
+    protected int getParent() {
+        //object parent
+        return this.parent;
+    }
+
+   //toString() method concatenating objects turned to strings in file together in form of output base
+    @Override
+    public String toString() {
+        //Strings in file concatenated
+         //return string as output
+        return this.getName() + " " + this.getIndex();
+    }
+
+    //compare to method for thing class
+    @Override
+    public int compareTo(ThingCMSC335 thingInstance) {
+        //if statement for getters to get name, index, parent
+        if (
+                //get index
+            (thingInstance.getIndex() == this.getIndex()) &&
+                //get name
+            (thingInstance.getName().equals(this.getName())) &&
+                //get parent
+            (thingInstance.getParent() == this.getParent())
+        ) {
+            //return a 1
+            return 1;
+            //else statement
+        } else {
+            //return a 0
+            return 0;
+        }
+    }
+}
