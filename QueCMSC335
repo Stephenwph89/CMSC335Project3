@@ -1,0 +1,97 @@
+import java.util.Comparator;
+
+
+final class QueCMSC335 implements Comparator<ThingCMSC335> {
+
+   //parameter variable for comparing numbers within txt file
+    private String parameter;
+
+    
+    protected QueCMSC335(String parameter) {
+         //set string parameter
+        this.setParameter(parameter);
+    }
+
+    //set parameter method
+    private void setParameter(String parameter) {
+        //parameter variable for set parameter
+        this.parameter = parameter;
+    }
+
+    //getter method for getting parameter after set
+    protected String getParameter() {
+        //returning parameter after getting
+        return this.parameter;
+    }
+
+    //commpare method for param1 and param2
+    @Override
+    public int compare(ThingCMSC335 param1, ThingCMSC335 param2) {
+         /**
+         * 
+         * statement, H. (2018). How to use greater than or equal in a switch statement. 
+         * [online] Stack Overflow. Available at:
+         * https://stackoverflow.com/questions/18510360/how-to-use-greater-than-or-equal-in-a-switch-statement
+         * [Accessed 11 Nov. 2018].
+         *
+         */
+         //Switch Case  for logical decision making for parameters
+        switch (this.getParameter()) {
+            //case totalWeight
+            case "totalWeight":
+                //if staement comparing param 1 to param 2  
+                if (((ShipCMSC335) param1).gettotalWeight() == ((ShipCMSC335) param2).gettotalWeight()) {
+                    return 0;
+                     //else if for param1 and param2 
+                } else if (((ShipCMSC335) param1).gettotalWeight() > ((ShipCMSC335)param2).gettotalWeight()) {
+                    return 1;
+                      //else for default param value 
+                } else {
+                    //return default value
+                    return -1;
+                }
+            //case hullLength
+            case "hullLength":
+                  //if statment to compare param1 to param2
+                if (((ShipCMSC335) param1).gethullLength() == ((ShipCMSC335) param2).gethullLength()) {
+                    return 0;
+                       //else if statement to compare param1 to param2   
+                } else if (((ShipCMSC335) param1).gethullLength() > ((ShipCMSC335) param2).gethullLength()) {
+                    return 1;
+                      //else staement for default param value  
+                } else {
+                      //return default value
+                    return -1;
+                }
+            //case depthDraft
+            case "depthDraft":
+                if (((ShipCMSC335) param1).getdepthDraft() == ((ShipCMSC335) param2).getdepthDraft()) {
+                    return 0;
+                } else if (((ShipCMSC335) param1).getdepthDraft() > ((ShipCMSC335) param2).getdepthDraft()) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            //case hullWidth 
+            case "hullWidth":
+                 //if statment to compare param1 to param2
+                if (((ShipCMSC335) param1).gethullWidth() == ((ShipCMSC335) param2).gethullWidth()) {
+                    return 0;
+                     //else if statement to compare param1 to param2 
+                } else if (((ShipCMSC335) param1).gethullWidth() > ((ShipCMSC335) param2).gethullWidth()) {
+                    return 1;
+                           //else staement for default param value 
+                } else {
+                       //return default value
+                    return -1;
+                }
+            //case name
+            case "name":
+                //return comparison of param1 and param2 for name
+                return param1.getName().compareTo(param2.getName());
+            default:
+                //return default value
+                return -1;
+        }
+    }
+}
