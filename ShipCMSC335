@@ -1,0 +1,232 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Scanner;
+
+
+class ShipCMSC335 extends ThingCMSC335 {
+
+    //Added arrivalTime and dockTime variable  AS PER RUBRIC
+    PortTimeCMSC335 arrivalTime,dockTime;
+    //Added parameter variables for ship dimensions AS PER RUBRIC
+    double depthDraft,hullLength,totalWeight,hullWidth;
+    //ArrayList for jobs AS PER RUBRIC
+    ArrayList<JobCMSC335> jobs;
+
+    //new fields added
+    //field port added
+    private SeaPortCMSC335 port;
+    //field dock added
+    private DockCMSC335 dock;
+    //field docksMap added
+    private HashMap<Integer, DockCMSC335> docksMap;
+
+    //constructor for ShipCMSC335 class / HashMaps for docks and seaports / fields docksMap and portsMap
+    protected ShipCMSC335(Scanner scanIn, HashMap<Integer, DockCMSC335> docksMap,
+            HashMap<Integer, SeaPortCMSC335> portsMap) {
+
+        super(scanIn);
+        //if statement scan the next double variable in
+        //next double variable is totalWeight
+        if (scanIn.hasNextDouble()) {
+            //totalWeight Variable
+            this.settotalWeight(scanIn.nextDouble());
+        }
+        //if statement scan the next double variable in
+        //next double variable is hullLength
+        if (scanIn.hasNextDouble()) {
+            //hullLength Variable
+            this.sethullLength(scanIn.nextDouble());
+        }
+        //if statement scan the next double variable in
+        //next double variable is hullWidth
+        if (scanIn.hasNextDouble()) {
+            //hullWidth Variable
+            this.sethullWidth(scanIn.nextDouble());
+        }
+        //if statement scan the next double variable in
+        //next double variable is depthDraft
+        if (scanIn.hasNextDouble()) {
+             //depthDraft Variable
+            this.setdepthDraft(scanIn.nextDouble());
+        }
+        //setter for Jobs new ArrayList
+        this.setJobs(new ArrayList<>());
+        //setter for port via fields docksMap / portsMap
+        this.setPort(docksMap, portsMap);
+        //setter for docksMap
+        this.setDocksMap(docksMap);
+        //setter for Dock
+        this.setDock();
+    }
+
+    // Setters
+    //Setter for arrival time
+    private void setArrivalTime(PortTimeCMSC335 arrivalTime) {
+        //setting object arrivale time
+        this.arrivalTime = arrivalTime;
+    }
+    //setter for dock ime
+    private void setDockTime(PortTimeCMSC335 dockTime) {
+        //setting object dock time
+        this.dockTime = dockTime;
+    }
+
+    //setter for setting total weight
+    private void settotalWeight(double totalWeight) {
+        //setting object totalweight
+        this.totalWeight = totalWeight;
+    }
+
+    //setter for setting hull length
+    private void sethullLength(double hullLength) {
+        //setting object hullLength
+        this.hullLength = hullLength;
+    }
+
+    //Setter for setting the hull width
+    private void sethullWidth(double hullWidth) {
+        //setting object hullWidth
+        this.hullWidth = hullWidth;
+    }
+
+    //Setter for setting depth draft
+    private void setdepthDraft(double depthDraft) {
+        //setting object depthDraft
+        this.depthDraft = depthDraft;
+    }
+
+    //Setter for setting Jobs to ArrayList
+    private void setJobs(ArrayList<JobCMSC335> jobs) {
+        //setting object jobs
+        this.jobs = jobs;
+    }
+
+    //Setter for setting Port to HashMaps for docks and ports
+    private void setPort(HashMap<Integer, DockCMSC335> docksMap, HashMap<Integer, SeaPortCMSC335> portsMap) {
+        //setting object port to ports map
+        //getter for ports map to get parent
+        //getter for parent
+        this.port = portsMap.get(this.getParent());
+        //if statement getting parent for docks and ports
+        if (this.port == null) {
+            //getting parent for docksMap
+            DockCMSC335 pier = docksMap.get(this.getParent());
+            //getting parent for portsMap
+            this.port = portsMap.get(pier.getParent());
+        }
+    }
+
+    //Setter for setting docksMap in HashMap
+    private void setDocksMap(HashMap<Integer, DockCMSC335> docksMap) {
+        //setting object docksMap
+        this.docksMap = docksMap;
+    }
+
+    //Setter for setting Dock
+    private void setDock() {
+        //if statement getting parent for docksMap
+        if (this.getDocksMap().containsKey(this.getParent())) {
+            //dock object
+            //getter for docks map to get parent
+            this.dock = this.getDocksMap().get(this.getParent());
+            //else statement
+        } else {
+            //dock object is null
+            this.dock = null;
+        }
+    }
+
+    //Setter to set dock
+    protected void setDock(DockCMSC335 dock) {
+        //set dock object
+        this.dock = dock;
+    }
+
+    // Getters
+    //Getter for arrival time
+    protected PortTimeCMSC335 getArrivalTime() {
+        //return objcet arrival time
+        return this.arrivalTime;
+    }
+
+    //getter for dock time
+    protected PortTimeCMSC335 getDockTime() {
+        //return object dock time
+        return this.dockTime;
+    }
+
+    //getter for getting totalWeight
+    protected double gettotalWeight() {
+        //retun object totalWeight
+        return this.totalWeight;
+    }
+
+   //getter for hullLength
+    protected double gethullLength() {
+        //return object hullLength
+        return this.hullLength;
+    }
+
+    //getter for hullWidth
+    protected double gethullWidth() {
+        //reutn obbject hullWidth
+        return this.hullWidth;
+    }
+
+   //getter for depthDraft
+    protected double getdepthDraft() {
+        //return object depthDrat
+        return this.depthDraft;
+    }
+
+    //getter for jobs in ArrayList
+    protected ArrayList<JobCMSC335> getJobs() {
+        //return object jobs
+        return this.jobs;
+    }
+
+    //getter for getting port
+    protected SeaPortCMSC335 getPort() {
+        //return object port
+        return this.port;
+    }
+
+    //getter to get docks map in HasMap
+    private HashMap<Integer, DockCMSC335> getDocksMap() {
+        //return object docksMap
+        return this.docksMap;
+    }
+
+    //getter for getting dock
+    protected DockCMSC335 getDock() {
+        //retun object dock
+        return this.dock;
+    }
+
+    
+    @Override
+    //toString method to out put objects as strings
+    public String toString() {
+        // String output variabe for when objects convert to strings
+        //also concatenate strings 
+        String output;
+        //concatenate totalWeight to string
+        output= super.toString() + "\n\tWeight: " + this.gettotalWeight() + "\n\tLength: "
+                //concat hullLength to string
+                //concat hullWidth to string
+            + this.gethullLength() + "\n\tWidth: " + this.gethullWidth() + "\n\tDraft: " + this.getdepthDraft()
+                //concat depthDraft to string
+            + "\n\tJobs:";
+        //if statement for if jobs are empty
+        if (this.getJobs().isEmpty()){
+            output += " No Jobs";
+            //else statement
+        } else {
+            //concat stream of jobs
+            output = this.getJobs().stream().map((newJob) -> "\n" + newJob.toString()).reduce(output, String::concat);
+        }
+        //return the output to the screen Yo!
+        return output;
+    }
+}
