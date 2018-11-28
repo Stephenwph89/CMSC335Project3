@@ -1,0 +1,96 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+
+final class PassengerShipCMSC335 extends ShipCMSC335 {
+
+   //Variable Declarations for occupied rooms, # passengers, # rooms
+    //data type int variable for occupied rooms
+    //data type int # of passengers
+     //data type int # of rooms
+    private int numOccupied, numPassengers, numRooms;
+
+    //Scanner Constructor for PassengerShip Class 
+    protected PassengerShipCMSC335(Scanner scanIn, HashMap<Integer, DockCMSC335> docksMap,
+            HashMap<Integer, SeaPortCMSC335> portsMap) {
+
+        super(scanIn, docksMap, portsMap);
+         //if statement scanning in next integer
+        if (scanIn.hasNextInt()) {
+            //set the number of passengers
+            this.setnumPassengers(scanIn.nextInt());
+        }
+         //if statement scanning in next integer
+        if (scanIn.hasNextInt()) {
+            //set the number of rooms
+            this.setnumRooms(scanIn.nextInt());
+        }
+         //if statement scanning in next integer
+        if (scanIn.hasNextInt()) {
+            //set the number of occupied rooms
+            this.setnumOccupied(scanIn.nextInt());
+        }
+    }
+    //Setters and Getters!
+    //Set num passengers method
+    private void setnumPassengers(int numPassengers) {
+        //set the passengers number to output on screen
+        this.numPassengers = numPassengers;
+    }
+  //Set num rooms method
+    private void setnumRooms(int numRooms) {
+        //set the number of rooms to output on screen
+        this.numRooms = numRooms;
+    }
+
+      //Set num occupied method
+    private void setnumOccupied(int numbOccupied) {
+        //set the number of occupied rooms to output on screen
+        this.numOccupied = numOccupied;
+    }
+
+    //get num pass method
+    protected int getnumPassengers() {
+        //return the num passengers as output to screen
+        return this.numPassengers;
+    }
+
+    // get num rooms method
+    protected int getnumRooms() {
+        //return num rooms as output to screen
+        return this.numRooms;
+    }
+
+    //get hum occupied method
+    protected int getnumOccupied() {
+        //return num of occupied rooms as output to screen
+        return this.numOccupied;
+    }
+
+    //to string method to convert object to string
+    @Override
+    public String toString() {
+        //stringOutput variable used for concatenating string
+        String stringOutput;
+        //concatenanting string for output of passship information
+        stringOutput = "Passenger Ship: " + super.toString() + "\n\tPassengers: "
+            + this.numPassengers() + "\n\tRooms: " + this.numRooms()
+            + "\n\tOccupied Rooms: " + this.getnumOccupied();
+        //return the stringOutput as.....well...an output
+        return stringOutput;
+    }
+
+    
+    //numrooms method
+    private int numRooms() {
+        //return those rooms
+        return numRooms;
+       
+    }
+    //num pass method
+    private int numPassengers() {
+        //return those passengers
+        return numPassengers;
+         
+    }
+}
