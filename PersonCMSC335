@@ -1,0 +1,62 @@
+import java.util.Scanner;
+
+
+final class PersonCMSC335 extends ThingCMSC335 {
+
+    //field that is required as per rubric
+    //variable skill
+    private String skill;
+
+    //data type boolean to see if worker is working
+    private boolean working;
+
+    //constructor
+    protected PersonCMSC335(Scanner scannerContents) {
+         //invokes super class constructor
+        super(scannerContents);
+        //if statement to set skill
+        if (scannerContents.hasNext()) {
+            this.setSkill(scannerContents.next());
+            //else statement
+        } else {
+            //if not produce ERROR
+            this.setSkill("ERROR");
+        }
+        //if not working set to false
+        this.setWorking(false);
+    }
+
+    // Setters & Getters!
+
+    //setting the skill
+    private void setSkill(String skill) {
+        //skill object
+        this.skill = skill;
+    }
+
+    //setting if working is true
+    protected void setWorking(boolean working) {
+        //working object
+        this.working = working;
+    }
+
+    //getting the skill
+    protected String getSkill() {
+        //returning the skill as output
+        return this.skill;
+    }
+
+    //getting working if true or false
+    protected boolean getWorking() {
+        //return working object
+        return this.working;
+    }
+
+   
+    @Override
+    //toString method converts string to object
+    public String toString() {
+        //return the skill via concatenated string
+        return "Person: " + super.toString() + " " + this.getSkill();
+    }
+}
