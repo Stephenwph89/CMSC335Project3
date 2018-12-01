@@ -1,0 +1,296 @@
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+
+final class WorldCMSC335 extends ThingCMSC335 {
+
+        //Made Array for the ports with in File
+    /*
+    * Ideas for implementing array list
+    * 
+    *Singh, C., P., B., S., V., Jamuar, R. R., . . . Raj, H. 
+    *(2018, September 03). ArrayList in java with example programs - Collections Framework.
+    * Retrieved October 27, 2018, from https://beginnersbook.com/2013/12/java-arraylist/
+    *
+    *
+    */
+	
+    //Fields for arrays required by rubric
+    //things variable
+    private ArrayList<ThingCMSC335 > things;
+    //ports variable
+    private ArrayList<SeaPortCMSC335 > ports;
+    //time variable
+    private PortTimeCMSC335  time;
+
+    //scanner constructor for class world
+    protected WorldCMSC335 (Scanner scannerContents) {
+        //invokes super class constructor
+        super(scannerContents);
+        //set all the things in array list
+        this.setAllThings(new ArrayList<>());
+        //set all the ports in array list
+        this.setPorts(new ArrayList<>());
+        //use process scanner via scannerContents
+        this.process(scannerContents);
+    }
+
+    // Setters & Getters!
+    //setting things in array list
+    private void setAllThings(ArrayList<ThingCMSC335 > things) {
+        //set the object
+        this.things = things;
+    }
+
+     //setting things in array list
+    private void setPorts(ArrayList<SeaPortCMSC335 > ports) {
+        //set the port
+        this.ports = ports;
+    }
+
+    //setting things in array list
+    private void setTime(PortTimeCMSC335  time) {
+        //set the time
+        this.time = time;
+    }
+
+    //getting things
+    protected ArrayList<ThingCMSC335 > getAllThings() {
+        //return the thing as output
+        return this.things;
+    }
+
+    //getting ports
+    protected ArrayList<SeaPortCMSC335 > getPorts() {
+        //return the ports as output
+        return this.ports;
+    }
+
+    //getting time
+    protected PortTimeCMSC335  getTime() {
+        //returning time as output
+        return this.time;
+    }
+
+    //process method
+    private void process(Scanner scannerContents) {
+
+        //These are the method fields
+        //variable strLine
+        String strLine;
+        //variable contLine
+        Scanner contLine;
+
+        //These are hashmaps from previous projects
+        //hash map for portsMap
+        HashMap<Integer, SeaPortCMSC335 > portsMap = new HashMap<>();
+        //hash map for docksMap
+        HashMap<Integer, DockCMSC335 > docksMap = new HashMap<>();
+        //hash map for ships map
+        HashMap<Integer, ShipCMSC335 > shipsMap = new HashMap<>();
+        //while loop
+        while (scannerContents.hasNextLine()) {
+            //this is to remove leading and trailing spaces
+            strLine = scannerContents.nextLine().trim(); 
+            //if statement so that the program does not look at blank lines
+            if (strLine.length() == 0) {
+                continue;
+            }
+            //this is so that the program scans through all content on each line
+            contLine = new Scanner(strLine);
+            // if statement looking for content on next line
+            if (contLine.hasNext()) {
+                //switch case for line content / .trim() eliminates leading and trailing spaces
+                switch(contLine.next().trim()) {
+                    //case ports
+                    case "port":
+                        //object new sea port
+                        SeaPortCMSC335  newSeaPort = new SeaPortCMSC335 (contLine);
+                        //get all things and add new sea port
+                        this.getAllThings().add(newSeaPort);
+                        //get the ports and add new sea port
+                        this.getPorts().add(newSeaPort);
+                        //put new sea port and and get index for new port
+                        portsMap.put(newSeaPort.getIndex(), newSeaPort);
+                        //break in between cases
+                        break;
+                        //case dock
+                    case "dock":
+                        //object new dock
+                        DockCMSC335  newDock = new DockCMSC335 (contLine);
+                        //get all things and add new dock
+                        this.getAllThings().add(newDock);
+                        //add things to list 
+                        this.addToList(portsMap, newDock, "getDocks");
+                        //put new dock and get index for new dock
+                        docksMap.put(newDock.getIndex(), newDock);
+                        //break in between cases
+                        break;
+                        //case passengerShip
+                    case "passengership":
+                        //object new passenger ship
+                        PassengerShipCMSC335  newPassengerShip = new PassengerShipCMSC335 (contLine, docksMap,
+                            portsMap);
+                         //get all things and add new passenger ship
+                        this.getAllThings().add(newPassengerShip);
+                        //add ship to parent 
+                        this.addShip(newPassengerShip, docksMap, portsMap);
+                        //put new passenger ship and get index for new passenger ship
+                        shipsMap.put(newPassengerShip.getIndex(), newPassengerShip);
+                         //break in between cases
+                        break;
+                        //case cargoShip
+                    case "cargoship":
+                          //object new cargo ship
+                        CargoShipCMSC335  newCargoShip = new CargoShipCMSC335 (contLine, docksMap, portsMap);
+                        //get all things and add new cargo ship
+                        this.getAllThings().add(newCargoShip);
+                            //add ship to parent 
+                        this.addShip(newCargoShip, docksMap, portsMap);
+                           //put new cargo ship and get index for new cargo ship
+                        shipsMap.put(newCargoShip.getIndex(), newCargoShip);
+                             //break in between cases
+                        break;
+                        //case person
+                    case "person":
+                        //object new person
+                        PersonCMSC335  newPerson = new PersonCMSC335 (contLine);
+                        //get all things and add new person
+                        this.getAllThings().add(newPerson);
+                        //add things to list 
+                        this.addToList(portsMap, newPerson, "getPersons");
+                        //break in between cases
+                        break;
+                    //case job
+                    case "job":
+                        //objcet new job
+                        JobCMSC335  newJob = new JobCMSC335 (contLine, shipsMap);
+                        //get all things and add new job
+                        this.getAllThings().add(newJob);
+                        //adding job to ship
+                        this.addJob(newJob, shipsMap, docksMap);
+                        //break in between case and default
+                        break;
+                    default: 
+                        //break to end switch case
+                        break;
+                }
+            }
+        }
+    }
+    //addToLIst method
+    private <T extends ThingCMSC335 > void addToList(HashMap<Integer, SeaPortCMSC335  > portsMap, T newThing,
+            String methodName) {
+
+        //These are the variable declarations for addToLIst method
+        //variable newPOrt
+        SeaPortCMSC335   newPort;
+        //variable thingsList
+        ArrayList<T> thingsList;
+        //method get list variable
+        Method getList;
+
+        //this is the definition to new port
+        //get new thing and get new parent
+        newPort = portsMap.get(newThing.getParent());
+        //Try Catch
+        try {
+          
+            //we want to get persons or get docks
+            getList = SeaPortCMSC335 .class.getDeclaredMethod(methodName);
+
+            
+            //we want to get list from new port and to invoke it from the array
+            thingsList = (ArrayList<T>) getList.invoke(newPort); // newPort.getList()
+            //if statement if new port is not equal to null
+            if (newPort != null) {
+                //add new thing to the list
+                thingsList.add(newThing);
+            }
+            //catch them exceptions!
+        } catch (
+            NoSuchMethodException |
+            SecurityException |
+            IllegalAccessException |
+            IllegalArgumentException |
+            InvocationTargetException ex
+        ) {
+            //Print the exception as error message!
+            System.out.println("ERROR: " + ex);
+        }
+    }
+
+    //add job method
+    private void addJob(JobCMSC335  newJob, HashMap<Integer, ShipCMSC335 > shipsMap,
+            HashMap<Integer, DockCMSC335 > docksMap) {
+     
+        //newDock 
+        DockCMSC335  newDock;
+        //newShip getting new job and getting new parent
+        ShipCMSC335  newShip = shipsMap.get(newJob.getParent());
+        //if statement new ship is not equal to null
+        if (newShip != null) {
+            //get jobs and add new job to new ship
+            newShip.getJobs().add(newJob);
+            //else statement
+        } else {
+            //newDock to get docksMap and new job to get parent
+            newDock = docksMap.get(newJob.getParent());
+            //newDock to get ship / get jobs / and add new job
+            newDock.getShip().getJobs().add(newJob);
+        }
+    }
+
+    // add ship method
+    private void addShip(ShipCMSC335  newShip, HashMap<Integer, DockCMSC335 > docksMap,
+            HashMap<Integer, SeaPortCMSC335 > portsMap) {
+        
+        //myPort
+        SeaPortCMSC335  myPort;
+        //myDock get docksMap and newship get parent
+        DockCMSC335  myDock = docksMap.get(newShip.getParent());
+        //if statement is equal to null
+        if (myDock == null) {
+            //myport get ports map new ship to get parent
+            myPort = portsMap.get(newShip.getParent());
+            //myport gets ship and adds new ship
+            myPort.getShips().add(newShip);
+            //my port to get que and add new ship
+            myPort.getQue().add(newShip);
+            //else statement
+        } else {
+            //myport to equal getting ports map and mydock getting parent
+            myPort = portsMap.get(myDock.getParent());
+            //setting new ship to dock
+            myDock.setShip(newShip);
+            //getting and adding ships 
+            myPort.getShips().add(newShip);
+        }
+    }
+    // toTree method
+    protected <T extends ThingCMSC335 > DefaultMutableTreeNode toTree() {
+
+        //variable declarations for to tree method
+        //main, parent, and child variables for tree
+        DefaultMutableTreeNode main, parent, child;
+        //getList variable
+        Method getList;
+        //Map variable
+        HashMap<String, String> Map;
+        //thingsList variable
+        ArrayList<T> thingsList;
+
+        //variable definitions
+        main = new DefaultMutableTreeNode("World");
+        Map = new HashMap<String, String>() {{
+            //put docks in string
+            put("Docks", "getDocks");
+            //put ships in string
+            put("Ships", "getShips");
+            //put que in stirng
+            put("Que", "getQue");
+            //put persons in string
+            put("Persons", "getPersons");
+        }};
