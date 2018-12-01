@@ -1,0 +1,35 @@
+final class PortTimeCMSC335 {
+
+    //used for an instance for port time in the WorldCMSC335 Class
+    //required field  via rubric
+    //int data type variable time
+    private int time;
+
+    //constructor
+    protected PortTimeCMSC335(int time) {
+        //set time object
+        this.setTime(time);
+    }
+
+    // Setters and Getters !
+    //setting the time
+    private void setTime(int time) {
+        //time object
+        this.time = time;
+    }
+
+    //getting the time
+    protected int getTime() {
+        //retunr time object
+        return this.time;
+    }
+
+    
+    @Override
+    
+    //toString method converts string to object
+    public String toString() {
+        //return time to string via concatenation
+        return "Time: " + this.getTime();
+    }
+}
