@@ -1,0 +1,84 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+
+final class CargoShipCMSC335 extends ShipCMSC335 {
+
+    //data type double variable declarations for cargoship class
+    // need to use double as per rubric
+    private double cargoValue, cargoVolume, cargoWeight; // double value of cargo, volume, and weight variables
+    
+    //Scanner Constructor for cargo ship class with instances of created hashmaps
+    protected CargoShipCMSC335(Scanner scanIn, HashMap<Integer, DockCMSC335> docksMap, HashMap<Integer, SeaPortCMSC335> portsMap) {
+
+            super(scanIn, docksMap, portsMap);
+        //if statement scanning for weight of cargo in file
+        if ( scanIn.hasNextDouble()) {
+            //set the cargo when found
+            this.setCargoWeight( scanIn.nextDouble());
+        }
+        //if statement scanning for volume of cargo in file
+        if (scanIn.hasNextDouble()) {
+            //set volume when found
+            this.setCargoVolume( scanIn.nextDouble());
+        }
+        //if statement scanning for cargo value in file
+        if (scanIn.hasNextDouble()) {
+            //set cargo value when found
+            this.setCargoValue(scanIn.nextDouble());
+        }
+    }
+
+
+    // Setters & Getters!
+    //setting the cargo weight with double cargoWeight variable
+    private void setCargoWeight(double cargoWeight) {
+        //cargoWeight object
+        this.cargoWeight = cargoWeight;
+    }
+
+     //setting the cargo volume with double cargoVolume variable
+    private void setCargoVolume(double cargoVolume) {
+        //cargoVolume object
+        this.cargoVolume = cargoVolume;
+    }
+
+     //setting the cargo value with double cargoValue variable
+    private void setCargoValue(double cargoValue) {
+        //cargoValue object
+        this.cargoValue = cargoValue;
+    }
+
+    //getting the cargo weight with double cargoWeight variable
+    protected double getCargoWeight() {
+        //return the cargoWeight object
+        return this.cargoWeight;
+    }
+
+   //getting the cargo weight with double cargoWeight variable
+    protected double getCargoVolume() {
+        //return the cargoVolume object
+        return this.cargoVolume;
+    }
+
+    //getting the cargo weight with double cargoWeight variable
+    protected double getCargoValue() {
+        //return the cargoValue object
+        return this.cargoValue;
+    }
+
+    
+    @Override
+    //toString method that converts string to object
+    public String toString() {
+        //stringOutput variable used in conversion on string to object
+        String stringOutput;
+        //stringObject variable used in concatenation
+        stringOutput =  "Cargo Ship: " + super.toString() + "\n\tCargo Weight: "
+            + this.getCargoWeight() + "\n\tCargo Volume: " + this.getCargoVolume()
+            + "\n\tCargo Value: " + this.getCargoValue();
+        //return the stringOutput
+        return stringOutput;
+    }
+}
