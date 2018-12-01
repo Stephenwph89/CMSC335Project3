@@ -294,3 +294,119 @@ final class WorldCMSC335 extends ThingCMSC335 {
             //put persons in string
             put("Persons", "getPersons");
         }};
+ //for loop to get ports
+        for (SeaPortCMSC335  newPort : this.getPorts()) {
+            //parent variable
+            //new port getting name and index
+            parent = new DefaultMutableTreeNode(newPort.getName() + " (" + newPort.getIndex()
+                + ")");
+            //main variable adding parent
+            main.add(parent);
+            //for loop
+            //create a set out of the same elements contained in the hash map
+            for (HashMap.Entry<String, String> pair : Map.entrySet()) {
+                //Try Catch
+                try {
+                    //get the declared method and get value to list
+                    getList = SeaPortCMSC335 .class.getDeclaredMethod(pair.getValue());
+                    //invoke ewport from array list
+                    thingsList = (ArrayList<T>) getList.invoke(newPort);
+
+                    //get the children from each port
+                    child = this.addBranchForNode(pair.getKey(), thingsList);
+                    //add child to parent
+                    parent.add(child);
+                    //catch the exceptions!
+                } catch (
+                    NoSuchMethodException |
+                    SecurityException |
+                    IllegalAccessException |
+                    IllegalArgumentException |
+                    InvocationTargetException ex
+                ) {
+                    //print error when exception caught
+                    System.out.println("ERROR: " + ex);
+                }
+            }
+        }
+        //return the main variable as output to screen
+        return main;
+    }
+
+    //addBranchForNode  method
+    private <T extends ThingCMSC335 > DefaultMutableTreeNode addBranchForNode(String title,
+            ArrayList<T> thingsList) {
+
+        //Variable declarations for addBranchForNode method
+        //variables newName and childInfo
+        String newName, childInfo;
+        // parent and child node variables parNode chNode
+        DefaultMutableTreeNode parNode, chNode;
+        //thisDock variable
+        DockCMSC335  thisDock;
+        //mooredShip variable and newShip variable
+        ShipCMSC335  mooredShip, newShip;
+
+        //Variable Definitions 
+        //parNode variable for new tree node title
+        parNode = new DefaultMutableTreeNode(title);
+        //for loop for thingsList
+        for (T newThing : thingsList) {
+            //newName variable equals newTHing / get the name from new Thing
+            //get index from new thing
+            newName = newThing.getName() + " (" + newThing.getIndex() + ")";
+            //newName is equal to chNode method for tree node
+            chNode = new DefaultMutableTreeNode(newName);
+
+             //if statement newThing is an instance of DockCMSC335
+            if (newThing instanceof DockCMSC335 ) { 
+                //newThing variable equal to thisDock for dock instance
+                thisDock = (DockCMSC335 ) newThing;
+                //get a ship that is moored for the dock
+                mooredShip = thisDock.getShip();
+                //if statement to get ship if is not equal to null
+                if (thisDock.getShip() != null) {
+                    //childInfor variable equal to mooredShip
+                    //get name of morred ship and get index of moored ship
+                    childInfo = mooredShip.getName() + " (" + mooredShip.getIndex() + ")";
+                    //add child info to child node
+                    chNode.add(new DefaultMutableTreeNode(childInfo));
+                }
+                //else if statement
+                //newThing is an instance of ShipCMSC335
+            } else if (newThing instanceof ShipCMSC335 ) {
+                //newShip variable equal to newThing instance of
+                newShip = (ShipCMSC335 ) newThing;
+                //if statement not newShip
+                //get the jobs if isEmpty()
+                if (!newShip.getJobs().isEmpty()) {
+                    //For loop get the jobs for new ship
+                    for (JobCMSC335  newJob : newShip.getJobs()) {
+                       // child information is equal to new job
+                       //get the name for new job
+                        childInfo = newJob.getName();
+                        //add child info to new job
+                        chNode.add(new DefaultMutableTreeNode(childInfo));
+                    }
+                }
+            }
+            //add child node to parent node
+            parNode.add(chNode);
+        }
+        //return the parent node as output
+        return parNode;
+    }
+
+    
+    @Override
+    //toString method converts string to object
+    public String toString() {
+        //stringOutput variable for "The World!"
+        String stringOutput = ">>>>>The World!:\n";
+        //strinOutput variable for concatenation with strings converted to objects
+        stringOutput = this.getPorts().stream().map((seaPort) -> seaPort.toString() + "\n").reduce(stringOutput, String::concat);
+        //return the stringOutput to screen
+        return stringOutput;
+    }
+}
+
