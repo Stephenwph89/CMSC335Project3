@@ -1,0 +1,46 @@
+import java.util.Scanner;
+
+
+final class DockCMSC335 extends ThingCMSC335 {
+
+    //Field required by ribric
+    //variable ship
+    private ShipCMSC335 ship;
+
+    //constructor
+    protected DockCMSC335(Scanner scannerContents) {
+        super(scannerContents);
+    }
+    //Setters & Getters!
+    //setting the ship
+    protected void setShip(ShipCMSC335 ship) {
+        //ship object
+        this.ship = ship;
+    }
+
+    //getting the ship
+    protected ShipCMSC335 getShip() {
+        //ship object
+        return this.ship;
+    }
+
+    
+    @Override
+    //toString method converts string to object
+    public String toString() {
+        //stringOutput variable 
+        //concatenated string for dock line
+        String stringOutput = "Dock: " + super.toString() + "\n\t";
+        //if statement if string output is empty
+        if (this.getShip() == null) {
+            //stringOutput variable could be empty
+            stringOutput += "EMPTY";
+            //else statement
+        } else { 
+            //get the ship and convert string to object
+            stringOutput += this.getShip().toString();
+        }
+        //return the output
+        return stringOutput;
+    }
+}
