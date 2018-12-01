@@ -1,0 +1,585 @@
+//added new imports for proj 3
+import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+
+
+final class JobCMSC335 extends ThingCMSC335 implements Runnable {
+
+    //these are the varaible declarations for class
+    private double lengthOfJob;
+    /*
+    * Ideas for implementing array list
+    * 
+    *Singh, C., P., B., S., V., Jamuar, R. R., . . . Raj, H. 
+    *(2018, September 03). ArrayList in java with example programs - Collections Framework.
+    * Retrieved October 27, 2018, from https://beginnersbook.com/2013/12/java-arraylist/
+    *
+    *
+    */
+
+    /*
+    * Idea for enumeration
+    * enum in Java - GeeksforGeeks. (2018, September 6). Retrieved from https://www.geeksforgeeks.org/enum-in-java/
+    */
+    private ArrayList<String> skill;
+    //These are fields for the threads
+    //enumerated status for constants
+    private enum Status {RUNNING, SUSPENDED, WAITING, DONE}
+    //parShip variable
+    private ShipCMSC335 parShip;
+    //parPort variable
+    private SeaPortCMSC335 parPort;
+    //isSusp, isCanc, isFinish, and isEnd variables
+    private boolean isSusp, isCanc, isFinish, isEnd;
+    //status variable
+    private Status status;
+    //thread variable
+    private Thread thread;
+    //employees variable
+    private ArrayList<PersonCMSC335> employees;
+
+    //These are elements for the GUI
+    //statLog and employeeLog variables for text area
+    private JTextArea statLog, employeeLog;
+    //cancBut and suspBut variables to cancel and suspend progress
+    private JButton cancBut, suspBut;
+    //progress varaible for JProgressBar
+    private JProgressBar progress;
+    //rowPanel for GUI components
+    private JPanel rowPanel;
+    //rowlabel for GUI components
+    private JLabel rowLabel;
+
+    //constructor
+    protected JobCMSC335(Scanner scannerContents, HashMap<Integer, ShipCMSC335> shipsMap) {
+         //invokes super class constructor
+        super(scannerContents);
+        //if statement for setting length of job
+        if (scannerContents.hasNextDouble()) {
+            //setting double data type variable lengthOfJob
+            this.setlengthOfJob(scannerContents.nextDouble());
+        }
+        //setting skill from array list
+        this.setSkill(new ArrayList<>());
+        //while loop get skill and add next
+        while (scannerContents.hasNext()) {
+            this.getSkill().add(scannerContents.next());
+        }
+        //getting and setting the job's ship
+        this.setParShip(shipsMap.get(this.getParent())); 
+        //gettin and setting the port for the ship
+        this.setParPort(this.getParShip().getPort());   
+        //empty the array list for the employees
+        this.setEmployees(new ArrayList<>());         
+        //setting for is not suspended by default
+        this.setIsSusp(false);     
+        //setting for is not canceled by default
+        this.setIsCanc(false);         
+        //setting for is not finished by default
+        this.setIsFinish(false);        
+        //Initially the progress is suspended
+        this.setStatus(Status.SUSPENDED);       
+        //setting a new thread
+        this.setThread(new Thread(this));            
+        //Do not need to stop
+        this.setIsEnd(false);                                
+    }
+
+    // Setters & Getters!
+
+   //setter for length of the job
+    private void setlengthOfJob(double lengthOfJob) {
+        //length of job object
+        this.lengthOfJob = lengthOfJob;
+    }
+
+    //setter for the skill set
+    private void setSkill(ArrayList<String> skill) {
+        //skill object
+        this.skill = skill;
+    }
+
+   //setter for parent ship
+    private void setParShip(ShipCMSC335 parShip) {
+        //parShip object
+        this.parShip = parShip;
+    }
+
+    //setter for paretn port
+    private void setParPort(SeaPortCMSC335 parPort) {
+        //parPort object
+        this.parPort = parPort;
+    }
+
+   //setter for status
+    protected void setStatLog(JTextArea statLog) {
+        //statLog object
+        this.statLog = statLog;
+    }
+
+    //setter for employee loog in text area
+    protected void setEmployeeLog(JTextArea employeeLog) {
+        //employee log object
+        this.employeeLog =  employeeLog;
+    }
+
+    //setter for employees in array list
+    private void setEmployees(ArrayList<PersonCMSC335> employees) {
+        //employees object
+        this.employees = employees;
+    }
+
+    //setter for suspend job
+    private void setIsSusp(boolean isSusp) {
+        //isSusp object
+        this.isSusp = isSusp;
+    }
+
+    //setter for cancel job
+    private void setIsCanc(boolean isCanc) {
+        //isCanc obj
+        this.isCanc = isCanc;
+    }
+
+   //setter for job is finished
+    private void setIsFinish(boolean isFinish) {
+        //isFinish obj
+        this.isFinish = isFinish;
+    }
+
+    //setter for setting status
+    private void setStatus(Status status) {
+        //status obj
+        this.status = status;
+    }
+
+    //setter for setting thread
+    private void setThread(Thread thread) {
+        //thread obj
+        this.thread = thread;
+    }
+
+    //setter for end of job
+    private void setIsEnd(boolean isEnd) {
+        //job obj
+        this.isEnd = isEnd;
+    }
+
+    //getter for length of the job
+    protected double getlengthOfJob() {
+        //return the length of job obj
+        return this.lengthOfJob;
+    }
+
+     //getter for length of the job
+    protected ArrayList<String> getSkill() {
+         //return the skill obj
+        return this.skill;
+    }
+
+     //getter for length of the job
+    protected ShipCMSC335 getParShip() {
+         //return the parShip obj
+        return this.parShip;
+    }
+
+    
+    protected SeaPortCMSC335 getParPort() {
+         //return the length parPort obj
+        return this.parPort;
+    }
+
+     //getter for length of the job
+    protected JTextArea getStatusLog() {
+         //return the statLog obj
+        return this.statLog;
+    }
+
+     //getter for length of the job
+    protected JTextArea getEmployeeLog() {
+         //return the employeeLog obj
+        return this.employeeLog;
+    }
+
+     //getter for length of the job
+    protected ArrayList<PersonCMSC335> getEmployees() {
+         //return the employees obj
+        return this.employees;
+    }
+
+     //getter for length of the job
+    protected boolean getIsSusp() {
+         //return the isSusp obj
+        return this.isSusp;
+    }
+
+     //getter for length of the job
+    protected boolean getIsCanc() {
+         //return the isCanc obj
+        return this.isCanc;
+    }
+
+     //getter for length of the job
+    protected boolean getIsFinish() {
+         //return the isFinish obj
+        return this.isFinish;
+    }
+
+     //getter for length of the job
+    protected Status getStatus() {
+         //return the status obj
+        return this.status;
+    }
+
+     //getter for length of the job
+    protected Thread getThread() {
+         //return the thread obj
+        return this.thread;
+    }
+
+     //getter for length of the job
+    private boolean getIsEnd() {
+         //return the isEnd obj
+        return this.isEnd;
+    }
+
+    //get job panel method
+     protected JPanel getJobPanel() {
+
+        //These are the definitions for all variables for GUI
+        //grid layout for panel
+        this.rowPanel = new JPanel(new GridLayout(1, 5));
+
+        ////get name and parent ship for JLabel
+        //apply label to center
+        this.rowLabel = new JLabel(this.getName() + " (" + this.getParShip().getName() + ")",
+            JLabel.CENTER);
+        //set the border for label as gray
+        this.rowLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+
+        //creation of new JProgressBar
+        this.progress = new JProgressBar();
+        //color for JProgressBar
+        this.progress.setStringPainted(true);
+
+        //These are the definitions for the JButtons
+        //this button suspends progress
+        this.suspBut = new JButton("Suspend Progress");
+        //this button cancels progress
+        this.cancBut = new JButton("Cancel Progress");
+
+        //This is the action listener for the suspend button
+        this.suspBut.addActionListener((ActionEvent e) -> {
+            //tell user that job is suspended
+            this.toggleSuspendFlag();
+        });
+
+        //This is the action listener for the cancel button
+        this.cancBut.addActionListener((ActionEvent e) -> {
+            //tell the user that job is canceled
+            this.toggleCancelFlag();
+        });
+
+        //This code adds the components to rowPanel
+        //add row label to row panel
+        this.rowPanel.add(this.rowLabel);
+        //add progress bars to row panel
+        this.rowPanel.add(this.progress);
+        //add suspend button to row panel
+        this.rowPanel.add(this.suspBut);
+        //add the cancel button to row panel
+        this.rowPanel.add(this.cancBut);
+        //return the row panel for GUI
+        return this.rowPanel;
+    }
+
+    //this is the start job method
+    protected void startJob() {
+        //set is finished when job is started(false)
+        //don't want job to finish when not finished
+        this.setIsFinish(false);
+        //get thread when job is started
+        //begin the execution of the thread
+        this.getThread().start();
+    }
+
+    //end job method
+    protected void endJob() {
+        //set is end when the job has officially ended
+        this.setIsEnd(true);
+    }
+
+    //toggle suspend flag method
+    private void toggleSuspendFlag() {
+        //this enables user to toggle suspension
+        this.setIsSusp(!this.getIsSusp());
+    }
+
+   //toggle cancel flag method
+    private void toggleCancelFlag() {
+        //set cancel is job is truly canceled
+        this.setIsCanc(true);
+        //set is finished is job is truly finished
+        this.setIsFinish(true);
+    }
+
+    //showStatus method
+    private void showStatus(Status status) {
+        //Switch CAse for status
+        switch(status){
+            //case RUNNING
+            case RUNNING:
+                //setting the background color
+                this.suspBut.setBackground(Color.ORANGE);
+                //setting the text
+                this.suspBut.setText("Running");
+                break;
+            //case SUSPENDED
+            case SUSPENDED:
+                //setting the background color
+                this.suspBut.setBackground(Color.RED);
+                 //setting the text
+                this.suspBut.setText("Suspended");
+                break;
+            //case WAITING    
+            case WAITING:
+                //setting the background color
+                this.suspBut.setBackground(Color.YELLOW);
+                 //setting the text
+                this.suspBut.setText("Waiting");
+                break;
+            //case DONE    
+            case DONE:
+                //setting the background color
+                this.suspBut.setBackground(Color.GRAY);
+                 //setting the text
+                this.suspBut.setText("Done");
+                break;
+        }
+    }
+    //isWaITING Method
+    private synchronized boolean isWaiting() {
+        //variable dockEmployees via array list
+        ArrayList<PersonCMSC335> dockEmployees;
+        //if statement for if the information is in the Que
+        if (this.getParPort().getQue().contains(this.getParShip())) { 
+            //return true when still waiting
+            return true; 
+            //else statement for if not in Que
+        } else { 
+            //if statement for the ships having employees
+            if (!this.getSkill().isEmpty()) { 
+                //get the resources for the parent port for employees
+                dockEmployees = this.getParPort().getResources(this);
+                //if statement if not all employees can be called on
+                if (dockEmployees == null) { 
+                    //return true if still waiting
+                    return true;
+                    //else statement if everything is being met
+                } else {
+                    //set the employees and start work
+                    this.setEmployees(dockEmployees); 
+                    //return false if not waiting
+                    return false; 
+                }
+                //else if the job does not need workers
+            } else { 
+                //return false and can proceed
+                return false;
+            }
+        }
+    }
+
+    
+    @Override
+    //reun method
+    public void run() {
+
+        //These are the variable decalarations for the run method
+        //long data type variables, time, start, stop
+        long time, start, stop;
+        //double data type variable
+        double timeDifference;
+        //statList variable boolean
+        ArrayList<Boolean> statList;
+        //newShipToPark variable
+        ShipCMSC335 newShipToPark;
+        //parentDock variable
+        DockCMSC335 parentDock;
+        //employyeeLOgLine variable
+        String employeeLogLine;
+
+        //these are the definitions of the variables
+        //currrent time in milliseconds
+        time = System.currentTimeMillis();
+        //start variable = time variable
+        start = time;
+        //stop variable = time variable + 1000 * long data type for length of job
+        stop = time + 1000 * (long) this.getlengthOfJob();
+        //time difference / subtract stop from time
+       timeDifference = stop - time;
+       //employee log line = ""
+        employeeLogLine = "";
+
+        //synchronize for multiple threads for parent port
+        synchronized(this.getParPort()) {
+            //while loop for "as long as waiting"
+            while (this.isWaiting()) {
+                //Try Catch
+                try {
+                    //show status of waiting while waiting
+                    this.showStatus(Status.WAITING);
+                    //parent port is waiting
+                    this.getParPort().wait();
+                    //catch the exception
+                } catch (InterruptedException e) {
+                    //print the exception
+                    System.out.println("ERROR: " + e);
+                }
+            }
+        }
+
+        //While Loop / whil time is less than stop
+        while (time < stop && !this.getIsCanc()) {
+            //Try Catch
+            try {
+                //pause execution
+                Thread.sleep(100);
+                //catch the exception
+            } catch (InterruptedException e) {
+                //print the exception
+                System.out.println("ERROR: " + e);
+            }
+            //if statement for not get suspension
+            if (!this.getIsSusp()) {
+                //if the status is running show status as RUNNING
+                this.showStatus(Status.RUNNING);
+                //time value when RUNNING
+                time += 100;
+                //setValue for progress via equation listed
+                this.progress.setValue((int) (((time - start) / timeDifference) * 100));
+                //else statement to show status SUSPENDED if suspended
+            } else {
+                //show the SUSPENDED status 
+                this.showStatus(Status.SUSPENDED);
+            }
+
+            //Stop
+            if (this.getIsEnd()) {
+                //return any output from logic above
+                return;
+            }
+        }
+        //if statement not get suspended
+        if (!this.getIsSusp()) {
+            //set progress value to 100
+            this.progress.setValue(100);
+            //set the value to DONE when progress reaches 100%
+            this.showStatus(Status.DONE);
+            //then, set finished to true
+            this.setIsFinish(true);
+        }
+
+        //synchronize for multiple threads for parent port
+        synchronized(this.getParPort()) {
+            //if statement not get skill and not get employees if is empty
+            if (!this.getSkill().isEmpty() && !this.getEmployees().isEmpty()) {
+                //concatenante string via employeeLogLine variable when name and paretn ship gotten
+                employeeLogLine += this.getName() + " (" + this.getParShip().getName()
+                    + ") returning";
+                //for loop get employees size count i++
+                for (int i = 0; i < this.getEmployees().size(); i++) {
+                    //i is 0
+                    if (i == 0) {
+                        //Then nothing will be displayed
+                        employeeLogLine += " ";
+                        //else if statement gte employees size - 1
+                    } else if (i < this.getEmployees().size() - 1) {
+                        //then log line will equal ,
+                        employeeLogLine += ", ";
+                        //else the log line will equal &
+                    } else {
+                        employeeLogLine += " & ";
+                        //get name, employees, and i value for employee log line
+                    }
+                    employeeLogLine += this.getEmployees().get(i).getName();
+                }
+                //employye log appended to next line
+                this.getEmployeeLog().append(employeeLogLine + "\n");
+
+                //return information on employees at log end
+                this.getParPort().returnResources(this.getEmployees());
+            }
+
+            //statList variable for new array list
+            statList = new ArrayList<>();
+            //get jobs and get paretn ship for statLIst
+            this.getParShip().getJobs().forEach((job) -> {
+                //add when job is finished
+                statList.add(job.getIsFinish());
+            });
+            //if statement for does not contain infor for statLIst
+            if (!statList.contains(false)) {
+                //get the status log and append string Ship is Leaving
+                //get the name and parent ship for string
+                //concat string
+                this.getStatusLog().append("Ship is leaving " + this.getParShip().getName() + " from "
+                        //get parent ship and get dock concat to "in"
+                    + this.getParShip().getDock() + " in "
+                        //get parent port and name concat to next line
+                    + this.getParPort().getName()+ "\n");
+                //while loop not get parent port, que, if the info is empty
+                while (!this.getParPort().getQue().isEmpty()) {
+                    //newShipToPark will be 0 if empty
+                    newShipToPark = this.getParPort().getQue().remove(0);
+                    //if statement if the new vessel is empty
+                    if (!newShipToPark.getJobs().isEmpty()) { 
+                        //get the dock to parent dock
+                        parentDock = (DockCMSC335) this.getParShip().getDock();
+                        //setting the ship that is to be parked to dock
+                        parentDock.setShip(newShipToPark); 
+                        //setting the dock at parent dock to know location
+                        newShipToPark.setDock(parentDock); 
+                        //get the status log and append the string 
+                        //concat names through out string
+                        this.getStatusLog().append("Ship is parking " + newShipToPark.getName() + " at "
+                            + parentDock.getName() + " in " + this.getParPort().getName()
+                            + "\n");
+                        break;
+                    }
+                }
+            }
+
+            //wakes up all threads
+            this.getParPort().notifyAll();
+        }
+    }
+
+    
+    @Override
+    //toString method converts string to object
+    public String toString() {
+        //stringOutput variable for below code
+        String stringOutput;
+        //stringOutput variable for concatenattion of string
+        stringOutput = "\t\t" + super.toString() + "\n\t\tLength of Job: " + this.getlengthOfJob()
+            + "\n\t\tRequirements:";
+        //if statement for if the skill is empty
+        if (this.getSkill().isEmpty()) {
+            //stringOutput None
+            stringOutput += "\n\t\t\t - None";
+            //else, then get the skill
+        } else {
+            //for loop for getting skill
+            for(String requiredSkill : this.getSkill()){
+                //out put gotten skill in string
+                stringOutput += "\n\t\t\t - " + requiredSkill;
+            }
+        }
+        //return information in stringOutput to screen
+        return stringOutput;
+    }
+}
