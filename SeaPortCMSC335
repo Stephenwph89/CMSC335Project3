@@ -1,9 +1,23 @@
+/**
+ *Stephen Hamilton
+ *Class: CMSC 335
+ *Section: 7981
+ *Instructor: Dinsoreanu, Mihaela
+ *Assignment: Project 3 Sea Port
+ * Purpose: The purpose of this project is to 
+ * allow the user to Create a thread for each job, 
+ * and to create a GUI to show the
+ * progress of each job.
+ * 
+ *Date Started: 11/18/2018
+ *Due Date: 12/02/2018
+ */
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 
 final class SeaPortCMSC335 extends ThingCMSC335 {
-
 
     /*
     * Ideas for implementing array list
@@ -16,7 +30,6 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
      */
     //These array lists are to create a list of items dock, ship, person, also includes a que 
     // This code is for the list of docks / variable declarations dock, que, ships, person
-    
     //as per rubric
     //docks variable for array list for DockCMSC335
     private ArrayList<DockCMSC335> docks;
@@ -26,7 +39,6 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
     private ArrayList<ShipCMSC335> ships;
     //persons variable for array list for PersonCMSC335
     private ArrayList<PersonCMSC335> persons;
-
     //constructor
     protected SeaPortCMSC335(Scanner scannerContents) {
          //invokes super class constructor
@@ -40,80 +52,67 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
         //setting persons for new array list
         this.setPersons(new ArrayList<>());
     }
-
     // Setters & Getters!
-    
     //setter for docks
     private void setDocks(ArrayList<DockCMSC335> docks) {
         //dock obj
         this.docks = docks;
     }
-
     //setter for que
     private void setQue(ArrayList<ShipCMSC335> que) {
         //que obj
         this.que = que;
     }
-
     //setter for ships
     private void setShips(ArrayList<ShipCMSC335> ships) {
         //ships obj
         this.ships = ships;
     }
-
     //setter for persons
     private void setPersons(ArrayList<PersonCMSC335> persons) {
         //persons obj
         this.persons = persons;
     }
-
     //getter for docks
     protected ArrayList<DockCMSC335> getDocks() {
         //return docks obj
         return this.docks;
     }
-
     //getter for que
     protected ArrayList<ShipCMSC335> getQue() {
         //return que obj
         return this.que;
     }
-
     //getter for ships
     protected ArrayList<ShipCMSC335> getShips() {
         //return ships obj
         return this.ships;
     }
-
     //getter for persons
     protected ArrayList<PersonCMSC335> getPersons() {
         //return persons obj
         return this.persons;
     }
-
     //synchronize for multiple threads for get resources method
     protected synchronized ArrayList<PersonCMSC335> getResources(JobCMSC335 job) {
-
         //Variable declarations for getResources method
         //in data type variable count
         int count;
         //selectedPerson variable for array list
         ArrayList<PersonCMSC335> selectedPerson;
         //boolean data type variable
-        boolean specificationsMet;
+        boolean specifications;
         //String type variable
         String employeeLogLine;
-
         //These are the definitions for the variables
         //looking for qualified employees / get skiil
         count = this.checkEmployees(job.getSkill());
         //selectedPerson for new arral list
        selectedPerson = new ArrayList<>();
        //specifications to be met are equal to true
-        specificationsMet = true;
+        specifications = true;
         //the log line start
         employeeLogLine = "";
-
         //if statement for if count is smaller than current number of elements
         if (count < job.getSkill().size()) {
             //append employee log to string
@@ -125,13 +124,14 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
             //return the array list for selectedPerson
             return new ArrayList<>();
         }
-
         //nested loop
-        outerLoop:
+        Loop:
         //for loop get skill requirements
         for (String requirement : job.getSkill()) {
             //for loop get persons
-            for (PersonCMSC335 person : this.getPersons()) {
+            for (Iterator<PersonCMSC335> it = this.getPersons().iterator(); it.hasNext();) {
+                PersonCMSC335 person = it.next();
+                //person from PersonCMSC335
                 //if statement to get skill if equals requirement
                 //&& is not person working
                 if (person.getSkill().equals(requirement) && !person.getWorking()) {
@@ -139,21 +139,18 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
                     person.setWorking(true); 
                     //add the person
                     selectedPerson.add(person);
-
-                    
                     //once selectedPerson is found go to next skill
-                    continue outerLoop;
+                    continue Loop;
                 }
             }
             
-            //could not find a selectedPerson for the job, stop looking
-            specificationsMet = false;
+            //could not find a selectedPerson specifications
+            specifications = false;// boolean false
+            //break for end
             break;
         }
-
-        // Basically a case of logical conjunction; we only return workers if all cases are true
         //if statement for specifications to be met
-        if (specificationsMet) {
+        if (specifications) {
             //get name of job and employee from parent ship
             //concat to string
             employeeLogLine += job.getName() + " (" + job.getParShip().getName() + ") reserving";
@@ -172,23 +169,21 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
                     //then add &
                     employeeLogLine += " & ";
                 }
-                //get the name of the selectedPerson to log line
+                //get selectedPerson to log line
                 employeeLogLine += selectedPerson.get(i).getName();
             }
             //append the job to next line of employee log line
             job.getEmployeeLog().append(employeeLogLine + "\n");
             //return the selected person as output to screen
             return selectedPerson;
-            //else
+            //else statement
         } else {
-
-            //return the resources for the job
+            //return the job resources
             this.returnResources(selectedPerson);
             //return them as null
-            return null;
+            return null;//return nothing
         }
     }
-
     //method for returning the resources from above code
     //synchronized with multiple threads
     protected synchronized void returnResources(ArrayList<PersonCMSC335> resources) {
@@ -198,14 +193,13 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
             employee.setWorking(false);
         });
     }
-
      //synchronized with multiple threads
     //checkEmployees method for requirements
     private synchronized int checkEmployees(ArrayList<String> requirements) {
         //the counter will start at 0
         int counter = 0;
         //nested loop
-        outerLoop:
+        Loop:
         //for loop requirements
         for (String requirement : requirements) {
             // for the employee getPersons
@@ -215,25 +209,20 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
                 if (requirement.equals(employee.getSkill())) {
                     //now count
                     counter++;
-
-                 
                     //if there is one qualified employee
-                    continue outerLoop;
+                    //continue to loop
+                    continue Loop;
                 }
             }
         }
         //return the counter info
         return counter;
     }
-
-    
     @Override
     //toString converts objects to string
     public String toString() {
         //varaible strinOutPUt for below code
         String stringOutput;
-
-        // A near-identical implementation of the method as denoted in the rubric
         //concatenanting the string with stringOutPUt variable
         stringOutput = "\n\nSeaPort: " + super.toString();
         //get the docks for the string and concat
@@ -246,8 +235,6 @@ final class SeaPortCMSC335 extends ThingCMSC335 {
         //.stream() processing collections of objects
         //map keys to values
         stringOutput = this.getQue().stream().map((shipQue) -> "\n> " + shipQue.toString()).reduce(stringOutput, String::concat);
-
-        // Since the above output displays ship-related details, this one is just a quick summary
         //ship realted details above in form of concatenated string
         stringOutput += "\n\n --- List of all ships:";
         //listing all ships and concatenating string
